@@ -5,6 +5,8 @@ spring:
   application:
     name: SERVICE-REGISTRY
 ---
+
+#eureka-server configuration
 eureka:
   client:
     fetch-registry: false
