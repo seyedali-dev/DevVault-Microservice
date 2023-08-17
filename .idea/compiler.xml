@@ -2,15 +2,17 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="API-Gateway" />
-        <module name="Project-Service" />
-        <module name="Config-Server" />
+        <module name="Authentication-Service" />
         <module name="Task-Service" />
         <module name="Comment-Service" />
+        <module name="Project-Service" />
+        <module name="Config-Server" />
         <module name="Service-Registry" />
       </profile>
     </annotationProcessing>
@@ -18,6 +20,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="API-Gateway" options="-parameters" />
+      <module name="Authentication-Service" options="-parameters" />
       <module name="Comment-Service" options="-parameters" />
       <module name="Config-Server" options="-parameters" />
       <module name="Project-Service" options="-parameters" />
