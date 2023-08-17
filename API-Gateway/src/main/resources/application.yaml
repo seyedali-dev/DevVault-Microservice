@@ -1,1 +1,25 @@
+#file: noinspection SpringBootApplicationYaml
+# -> this is for suppressing `config-server configuration` warning
+server:
+  port: 9999
 
+spring:
+  application:
+    name: API-GATEWAY
+---
+
+#config-server configuration
+spring:
+  config:
+    import: configserver:http://localhost:9296
+---
+
+#api-gateway configuration
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: X
+          uri: lb://X
+          predicates:
+            - Path=/X/**
