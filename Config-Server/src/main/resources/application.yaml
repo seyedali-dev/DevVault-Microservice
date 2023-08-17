@@ -1,0 +1,29 @@
+server:
+  port: 9296
+
+spring:
+  application:
+    name: CONFIG-SERVER
+---
+
+#config-server configuration
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/sayedxali/configserver-dailycodebuffer.git
+          clone-on-start: true
+          search-paths: master   # set the default branch name to 'master'
+---
+
+#eureka-client configuration
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_ADDRESS_URI:http://localhost:8761/eureka}
