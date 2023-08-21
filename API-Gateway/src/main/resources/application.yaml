@@ -10,7 +10,7 @@ spring:
 #config-server configuration
 spring:
   config:
-    import: optional:configserver:http://localhost:9296/
+    import: optional:${CONFIG_SERVER_URI:http://localhost:9296}/
 ---
 
 #api-gateway configuration
@@ -23,9 +23,19 @@ spring:
 #          uri: lb://AUTHENTICATION-SERVICE
 #          predicates:
 #            - Path=/api/v1/auth/**
+#          #intercept requests using filter for jwt
+#          filters:
+#            - AuthenticationFilter
+
 ---
 
 spring:
   main:
     web-application-type: reactive
 ---
+
+#custom-variables
+token:
+  secret:
+    key: "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength"
+  prefix: "Bearer "

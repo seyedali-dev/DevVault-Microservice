@@ -11,9 +11,9 @@ import java.util.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 public class User implements UserDetails {
 

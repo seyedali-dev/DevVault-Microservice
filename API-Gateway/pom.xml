@@ -19,6 +19,20 @@
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
 	</properties>
 	<dependencies>
+		<!-- =================== SHARED-LIBRARY BETWEEN MICROSERVICES =================== -->
+		<dependency>
+			<groupId>com.dev.vault</groupId>
+			<artifactId>Shared-Lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- =================== SHARED-LIBRARY BETWEEN MICROSERVICES =================== -->
+		<dependency>
+			<groupId>com.dev.vault</groupId>
+			<artifactId>Shared-Lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!-- =================== MICROSERVICES DEPENDENCIES =================== -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -68,13 +82,24 @@
 		</dependency>
 		<!-- =================== END OF MICROSERVICES DEPENDENCIES =================== -->
 
-		<!-- DEVELOPER-TOOLS -->
+		<!-- JWT -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
 		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+
+		<!-- DEVELOPER-TOOLS -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -96,6 +121,12 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>Authentication-Service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

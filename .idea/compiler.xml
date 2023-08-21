@@ -11,6 +11,7 @@
         <module name="Authentication-Service" />
         <module name="Task-Service" />
         <module name="Comment-Service" />
+        <module name="Shared-Lib" />
         <module name="Project-Service" />
         <module name="Config-Server" />
         <module name="Service-Registry" />
@@ -25,6 +26,7 @@
       <module name="Config-Server" options="-parameters" />
       <module name="Project-Service" options="-parameters" />
       <module name="Service-Registry" options="-parameters" />
+      <module name="Shared-Lib" options="-parameters" />
       <module name="Task-Service" options="-parameters" />
     </option>
   </component>
