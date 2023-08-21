@@ -1,8 +1,8 @@
 package com.dev.vault.authenticationservice.service;
 
-import com.dev.vault.authenticationservice.exceptions.AuthenticationFailedException;
-import com.dev.vault.authenticationservice.exceptions.ResourceAlreadyExistsException;
-import com.dev.vault.authenticationservice.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.exceptions.AuthenticationFailedException;
+import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
+import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.model.request.AuthenticationRequest;
 import com.dev.vault.authenticationservice.model.request.RegisterRequest;

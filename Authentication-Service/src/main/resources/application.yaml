@@ -16,9 +16,9 @@ spring:
 
 #custom variables
 token:
-  prefix: "Bearer "
   secret:
-    key: "5367566B59703373367638792F423F4528482B4D6251655468576D5A71347437"
+    key: "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength"
+  prefix: "Bearer "
 
 account:
   verification:
@@ -30,7 +30,7 @@ account:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dev_vault
+    url: jdbc:mysql://localhost:3306/dev_vault_authentication_service
     username: root
     password: root
 

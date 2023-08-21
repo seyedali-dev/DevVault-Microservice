@@ -30,7 +30,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .logout(logout ->
                         logout.logoutUrl("/api/v1/auth/logout").addLogoutHandler(logoutHandlerImpl)

@@ -1,6 +1,6 @@
 package com.dev.vault.authenticationservice.config;
 
-import com.dev.vault.authenticationservice.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

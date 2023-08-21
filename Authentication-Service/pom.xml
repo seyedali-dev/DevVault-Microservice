@@ -33,6 +33,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- =================== SHARED-LIBRARY BETWEEN MICROSERVICES =================== -->
+        <dependency>
+            <groupId>com.dev.vault</groupId>
+            <artifactId>Shared-Lib</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- =================== MICROSERVICES DEPENDENCIES =================== -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -97,12 +104,6 @@
         </dependency>
 
         <!-- DEVELOPER-TOOLS -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
