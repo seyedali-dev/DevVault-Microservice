@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
 /**
  * Service Implementation of Project Creation
@@ -69,7 +70,11 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
         Optional<Project> foundProject = projectRepository.findByProjectNameAllIgnoreCase(projectName);
         if (foundProject.isPresent()) {
             log.error("⚠️this project already exists! provide a unique name");
-            throw new ResourceAlreadyExistsException(String.format("Project with provided name: {%s} already exists", projectName));
+            throw new ResourceAlreadyExistsException(
+                    String.format("Project with provided name: {%s} already exists", projectName),
+                    NOT_ACCEPTABLE,
+                    NOT_ACCEPTABLE.value()
+            );
         }
     }
 

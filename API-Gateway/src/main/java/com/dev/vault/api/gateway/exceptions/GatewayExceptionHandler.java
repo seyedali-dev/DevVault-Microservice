@@ -57,9 +57,15 @@ public class GatewayExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException e) {
+    public ResponseEntity<ErrorResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException e) {
         log.error("❌🔍 ResourceNotFoundException triggered - Cause ❌🔍: {{}}", e.getMessage());
-        return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.NOT_FOUND);
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorMessage(e.getMessage())
+                .httpStatus(e.getHttpStatus())
+                .statusCode(e.getHttpStatus().value())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
 
@@ -77,16 +83,28 @@ public class GatewayExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse> resourceAlreadyExistsExceptionHandler(ResourceAlreadyExistsException e) {
+    public ResponseEntity<ErrorResponse> resourceAlreadyExistsExceptionHandler(ResourceAlreadyExistsException e) {
         log.error("❌🛑 ResourceAlreadyExistsException triggered - Cause ❌🛑: {{}}", e.getMessage());
-        return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorMessage(e.getMessage())
+                .httpStatus(e.getHttpStatus())
+                .statusCode(e.getHttpStatus().value())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
 
     @ExceptionHandler(AuthenticationFailedException.class)
-    public ResponseEntity<ApiResponse> authenticationFailedExceptionHandler(AuthenticationFailedException e) {
+    public ResponseEntity<ErrorResponse> authenticationFailedExceptionHandler(AuthenticationFailedException e) {
         log.error("❌🔒 AuthenticationFailedException triggered - Cause ❌🔒: {{}}", e.getMessage());
-        return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.UNAUTHORIZED);
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorMessage(e.getMessage())
+                .httpStatus(e.getHttpStatus())
+                .statusCode(e.getHttpStatus().value())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
 
@@ -105,16 +123,28 @@ public class GatewayExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(NotLeaderOfProjectException.class)
-    public ResponseEntity<ApiResponse> notLeaderOfProjectExceptionHandler(NotLeaderOfProjectException e) {
+    public ResponseEntity<ErrorResponse> notLeaderOfProjectExceptionHandler(NotLeaderOfProjectException e) {
         log.error("❌⛔ NotLeaderOfProjectException triggered - Cause ❌⛔: {{}}", e.getMessage());
-        return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.FORBIDDEN);
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorMessage(e.getMessage())
+                .httpStatus(e.getHttpStatus())
+                .statusCode(e.getHttpStatus().value())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
 
     @ExceptionHandler(NotMemberOfProjectException.class)
-    public ResponseEntity<ApiResponse> notMemberOfProjectExceptionHandler(NotMemberOfProjectException e) {
+    public ResponseEntity<ErrorResponse> notMemberOfProjectExceptionHandler(NotMemberOfProjectException e) {
         log.error("❌🚫 NotMemberOfProjectException triggered - Cause ❌🚫: {{}}", e.getMessage());
-        return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.FORBIDDEN);
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorMessage(e.getMessage())
+                .httpStatus(e.getHttpStatus())
+                .statusCode(e.getHttpStatus().value())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
 }
