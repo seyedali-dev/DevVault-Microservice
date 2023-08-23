@@ -6,7 +6,7 @@ import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.model.request.AuthenticationRequest;
 import com.dev.vault.authenticationservice.model.request.RegisterRequest;
-import com.dev.vault.authenticationservice.model.response.AuthenticationResponse;
+import com.dev.vault.shared.lib.model.response.AuthenticationResponse;
 
 /**
  * Service class for authenticating and registering user.
@@ -50,10 +50,10 @@ public interface AuthenticationService {
     /**
      * Retrieves the currently logged-in user.
      *
-     * @return the logged-in user
+     * @return the logged-in user's ID
      * @throws AuthenticationFailedException if authentication was not successful i.e. email or password is wrong
      */
-    User getCurrentUser()
+    Long getCurrentUser()
             throws AuthenticationFailedException;
 
 }

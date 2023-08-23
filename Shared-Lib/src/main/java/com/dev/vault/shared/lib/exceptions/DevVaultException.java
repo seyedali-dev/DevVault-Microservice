@@ -10,6 +10,7 @@ public class DevVaultException extends RuntimeException {
 
     private int statusCode;
     private HttpStatus httpStatus;
+    private String type;
 
     public DevVaultException(String message) {
         super(message);

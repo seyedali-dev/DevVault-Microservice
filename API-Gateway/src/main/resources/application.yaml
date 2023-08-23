@@ -26,6 +26,9 @@ spring:
 #          #intercept requests using filter for jwt
 #          filters:
 #            - AuthenticationFilter
+#            - name: RemoveRequestHeader
+#              args:
+#                name: Authorization
 
 ---
 
