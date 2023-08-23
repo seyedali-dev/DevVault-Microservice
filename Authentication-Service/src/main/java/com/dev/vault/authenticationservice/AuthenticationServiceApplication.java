@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan("com.dev.vault.shared.lib.exceptions")
 public class AuthenticationServiceApplication {
 
     public static void main(String[] args) {

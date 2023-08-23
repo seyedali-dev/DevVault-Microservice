@@ -1,19 +1,19 @@
 package com.dev.vault.authenticationservice.service;
 
-import com.dev.vault.shared.lib.exceptions.AuthenticationFailedException;
-import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
-import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.authenticationservice.config.jwt.JwtService;
 import com.dev.vault.authenticationservice.model.entity.Roles;
 import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.model.entity.VerificationToken;
 import com.dev.vault.authenticationservice.model.request.AuthenticationRequest;
 import com.dev.vault.authenticationservice.model.request.RegisterRequest;
-import com.dev.vault.authenticationservice.model.response.AuthenticationResponse;
 import com.dev.vault.authenticationservice.repository.RolesRepository;
 import com.dev.vault.authenticationservice.repository.UserRepository;
 import com.dev.vault.authenticationservice.repository.VerificationTokenRepository;
 import com.dev.vault.authenticationservice.util.AuthenticationUtils;
+import com.dev.vault.shared.lib.exceptions.AuthenticationFailedException;
+import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
+import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.model.response.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 
 import static com.dev.vault.authenticationservice.model.enums.Role.TEAM_MEMBER;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 /**
  * Authentication implementation: Registration & Login.
@@ -160,23 +159,43 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
-
     /**
      * {@inheritDoc}
      */
+//    @Override
+//    public Long getCurrentUser() {
+//        // get the email of the currently authenticated user from the security context
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String email = authentication.getName();
+//
+//        // find the user object in the database using the email
+//        Optional<User> foundUser = userRepository.findByEmail(email);
+//
+//        return foundUser
+//                .orElseThrow(() ->
+//                        new AuthenticationFailedException("❌❌❌ User: '" + email + "' is not authorized! ❌❌❌", UNAUTHORIZED, 401)
+//                ).getUserId();
+//    }
     @Override
-    public User getCurrentUser() {
-        // get the email of the currently authenticated user from the security context
+    public Long getCurrentUser() {
+        // Step 1: Get the authentication object from the security context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Check if the user is authenticated
+        if (authentication == null || !authentication.isAuthenticated())
+            throw new AuthenticationFailedException("❌❌❌ User is not authenticated! ❌❌❌");
+
+        // Step 2: Get the email of the authenticated user
         String email = authentication.getName();
 
-        // find the user object in the database using the email
+        // Find the user object in the database using the email
         Optional<User> foundUser = userRepository.findByEmail(email);
 
+        // Check if the user exists in the database
         return foundUser
                 .orElseThrow(() ->
-                        new AuthenticationFailedException("❌❌❌ User: '" + email + "' is not authorized! ❌❌❌", UNAUTHORIZED, UNAUTHORIZED.value())
-                );
+                        new ResourceNotFoundException("❌❌❌ User with email: '" + email + "' not found! ❌❌❌", NOT_FOUND, 404)
+                ).getUserId();
     }
 
 }
