@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.HttpStatus.CREATED;
 
 /**
- * REST controller for managing projects and groups.
+ * REST controller for managing projects.
  */
 @RestController
-@RequestMapping("/api/v1/project/proj_leader")
+@RequestMapping("/api/v1/project")
 @RequiredArgsConstructor
 public class ProjectManagementController {
 

@@ -17,6 +17,8 @@ import java.security.SignatureException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @Slf4j
 @RestControllerAdvice
 public class AuthenticationExceptionHandler extends ResponseEntityExceptionHandler {
@@ -43,7 +45,7 @@ public class AuthenticationExceptionHandler extends ResponseEntityExceptionHandl
             Object invalidValue = constraintViolation.getInvalidValue();
             map.put(message, invalidValue.toString());
         });
-        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(map, BAD_REQUEST);
     }
 
 
@@ -52,7 +54,7 @@ public class AuthenticationExceptionHandler extends ResponseEntityExceptionHandl
         log.error("❌🔀 MethodArgumentTypeMismatchException triggered - Cause ❌🔀: {{}}", ex.getMessage());
         Map<String, Object> map = new HashMap<>();
         map.put(ex.getName(), ex.getMessage());
-        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(map, BAD_REQUEST);
     }
 
 

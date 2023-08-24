@@ -2,6 +2,7 @@ package com.dev.vault.authenticationservice.controller.intercommunication;
 
 import com.dev.vault.authenticationservice.config.jwt.JwtService;
 import com.dev.vault.authenticationservice.service.AuthenticationService;
+import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +35,27 @@ public class ServiceInterCommunicationController {
 
     @PostMapping("/add-leader-role/{userId}")
     @ResponseStatus(CREATED)
-    public ResponseEntity<Void> addProjectLeaderRoleToUser(@PathVariable Long userId) {
+    public ResponseEntity<String> addProjectLeaderRoleToUser(@PathVariable Long userId) {
         userService.add_ProjectLeaderRole(userId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>("PROJECT_LEADER role added to user", CREATED);
     }
 
 
     @GetMapping("/project-leader-role-id")
     public Long getProjectLeaderRoleId() {
         return userService.getProjectLeaderRole().getRoleId();
+    }
+
+
+    @GetMapping("/get-username/{userId}")
+    public String getUserNameById(@PathVariable Long userId) {
+        return userService.getUserById(userId).getUsername();
+    }
+
+
+    @GetMapping("/get-user/{userId}")
+    public UserDTO getUserDTO(@PathVariable Long userId) {
+        return userService.getUserDTOById(userId);
     }
 
 }

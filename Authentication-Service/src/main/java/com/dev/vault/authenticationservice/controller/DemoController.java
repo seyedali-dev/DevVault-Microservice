@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Demo controller for testing authorization and authentication. (since i'm not very good at writing tests)
  */
+@SuppressWarnings("SameReturnValue")
 @RestController
 @RequestMapping("/authenticated")
 public class DemoController {

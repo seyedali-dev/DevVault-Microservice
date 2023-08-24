@@ -1,5 +1,6 @@
 package com.dev.vault.projectservice.feign.client;
 
+import com.dev.vault.shared.lib.model.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,18 @@ public interface AuthUserFeignClient {
 
 
     @PostMapping("/add-leader-role/{userId}")
-    ResponseEntity<Void> addProjectLeaderRoleToUser(@PathVariable Long userId);
+    ResponseEntity<String> addProjectLeaderRoleToUser(@PathVariable Long userId);
 
 
     @GetMapping("/project-leader-role-id")
     Long getProjectLeaderRoleId();
+
+
+    @GetMapping("/get-username/{userId}")
+    String getUserNameById(@PathVariable Long userId);
+
+
+    @GetMapping("/get-user/{userId}")
+    UserDTO getUserDTO(@PathVariable Long userId);
 
 }
