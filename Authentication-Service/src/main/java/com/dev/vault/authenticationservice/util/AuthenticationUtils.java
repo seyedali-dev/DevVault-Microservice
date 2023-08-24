@@ -15,6 +15,7 @@ import java.util.List;
  * A utility class that provides helper methods for authentication and registration of user.
  * This class contains method for revoking the JWT token, build and saving JWT token, generating verification token.
  */
+@SuppressWarnings("unused")
 @Service
 @RequiredArgsConstructor
 public class AuthenticationUtils {

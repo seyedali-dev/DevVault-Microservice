@@ -6,6 +6,7 @@ import lombok.*;
 /**
  * Entity for generating a JoinRequestCoupon for user's that want to make join request to a project.
  */
+@SuppressWarnings("unused")
 @Getter
 @Setter
 @Builder

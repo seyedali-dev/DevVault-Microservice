@@ -1,4 +1,4 @@
-package com.dev.vault.authenticationservice.model.enums;
+package com.dev.vault.shared.lib.model.enums;
 
 public enum Role {
     PROJECT_LEADER,

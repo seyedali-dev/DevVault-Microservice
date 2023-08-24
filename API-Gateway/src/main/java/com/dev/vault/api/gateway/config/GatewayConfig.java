@@ -29,13 +29,14 @@ public class GatewayConfig {
 
                 // PROJECT-SERVICE
                 .route("project-route", predicateSpec -> predicateSpec
-                        .path("/api/v1/project/proj_leader/**")
+                        .path("/api/v1/project/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
                         .uri("lb://PROJECT-SERVICE")
                 )
                 .build();
     }
 
+    // Used for putting the authentication filter before each specified url
     private GatewayFilter filterWithAuthentication() {
         return (exchange, chain) -> authenticationFilter.apply((AuthenticationFilter.Config) null).filter(exchange, chain);
     }

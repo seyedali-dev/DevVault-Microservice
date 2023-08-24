@@ -32,12 +32,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.dev.vault.authenticationservice.model.enums.Role.TEAM_MEMBER;
+import static com.dev.vault.shared.lib.model.enums.Role.TEAM_MEMBER;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * Authentication implementation: Registration & Login.
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Service
 @RequiredArgsConstructor

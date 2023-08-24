@@ -8,9 +8,8 @@ import org.springframework.http.HttpStatus;
 @EqualsAndHashCode(callSuper = true)
 public class DevVaultException extends RuntimeException {
 
-    private int statusCode;
     private HttpStatus httpStatus;
-    private String type;
+    private int statusCode;
 
     public DevVaultException(String message) {
         super(message);

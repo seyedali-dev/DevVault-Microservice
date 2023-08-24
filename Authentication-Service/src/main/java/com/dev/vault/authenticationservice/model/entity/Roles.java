@@ -1,6 +1,6 @@
 package com.dev.vault.authenticationservice.model.entity;
 
-import com.dev.vault.authenticationservice.model.enums.Role;
+import com.dev.vault.shared.lib.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
