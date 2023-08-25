@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "AUTHENTICATION-SERVICE/api/v1/inter-communication", configuration = FeignClientConfiguration.class)
 public interface AuthUserFeignClient {
 
+    @GetMapping("/current-user-dto")
+    UserDTO getCurrentUsers_DTO(@RequestHeader("Authorization") String authHeader);
+
+
     @GetMapping("/current-user-id")
-    Long getCurrentUserId(@RequestHeader("Authorization") String authHeader);
+    Long getCurrentUsers_Id(@RequestHeader("Authorization") String authHeader);
 
 
     @PostMapping("/add-leader-role/{userId}")
@@ -23,11 +27,7 @@ public interface AuthUserFeignClient {
     Long getProjectLeaderRoleId();
 
 
-    @GetMapping("/get-username/{userId}")
-    String getUserNameById(@PathVariable Long userId);
-
-
     @GetMapping("/get-user/{userId}")
-    UserDTO getUserDTO(@PathVariable Long userId);
+    UserDTO getUserDTOById(@PathVariable Long userId);
 
 }

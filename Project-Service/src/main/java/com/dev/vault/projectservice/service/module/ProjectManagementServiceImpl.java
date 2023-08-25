@@ -1,6 +1,7 @@
 package com.dev.vault.projectservice.service.module;
 
 import com.dev.vault.projectservice.feign.client.AuthUserFeignClient;
+import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
 import com.dev.vault.projectservice.model.entity.Project;
 import com.dev.vault.projectservice.model.entity.ProjectMembers;
 import com.dev.vault.projectservice.model.entity.UserProjectRole;
@@ -9,6 +10,8 @@ import com.dev.vault.projectservice.repository.ProjectMembersRepository;
 import com.dev.vault.projectservice.repository.ProjectRepository;
 import com.dev.vault.projectservice.repository.UserProjectRoleRepository;
 import com.dev.vault.projectservice.service.interfaces.ProjectManagementService;
+import com.dev.vault.projectservice.util.ProjectUtilsImpl;
+import com.dev.vault.projectservice.util.RepositoryUtils;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,8 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
     private final ModelMapper modelMapper;
     private final AuthUserFeignClient authUserFeignClient;
     private final HttpServletRequest httpServletRequest;
+    private final ProjectUtilsImpl projectUtils;
+    private final RepositoryUtils repositoryUtils;
 
     /**
      * {@inheritDoc}
@@ -48,7 +53,7 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
 
         // Get the current user and Add the `PROJECT_LEADER` role to the current user and save to db
         String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
-        Long currentUserId = authUserFeignClient.getCurrentUserId(requestHeader);
+        Long currentUserId = authUserFeignClient.getCurrentUsers_Id(requestHeader);
 
         // Make API call to `AUTHENTICATION-SERVICE` to add `PROJECT_LEADER` role to the `current user`
         authUserFeignClient.addProjectLeaderRoleToUser(currentUserId);
@@ -65,6 +70,17 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
         // Return a `ProjectRequest` object with the project information as response
         return createProjectRequestFromProject(project);
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProjectMembersDto listMembersOfProject(Long projectId) {
+        Project project = repositoryUtils.findProjectById_OrElseThrow_ResourceNotFoundException(projectId);
+        return new ProjectMembersDto(projectUtils.getUserDtoList(project));
+    }
+
 
     private void validateProjectNameUnique(String projectName) {
         Optional<Project> foundProject = projectRepository.findByProjectNameAllIgnoreCase(projectName);

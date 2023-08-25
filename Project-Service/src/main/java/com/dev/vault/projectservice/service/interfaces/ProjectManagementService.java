@@ -1,5 +1,6 @@
 package com.dev.vault.projectservice.service.interfaces;
 
+import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
 import com.dev.vault.projectservice.model.request.ProjectRequest;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
@@ -17,4 +18,14 @@ public interface ProjectManagementService {
     ProjectRequest createProject(ProjectRequest projectRequest)
             throws ResourceNotFoundException, ResourceAlreadyExistsException;
 
+
+    /**
+     * Lists all the members of the specified project.
+     *
+     * @param projectId the members of the project that we want to see
+     * @return list of project members as {@link ProjectMembersDto}
+     * @throws ResourceNotFoundException if the project was not found
+     */
+    ProjectMembersDto listMembersOfProject(Long projectId)
+            throws ResourceNotFoundException;
 }

@@ -1,14 +1,12 @@
 package com.dev.vault.projectservice.controller;
 
+import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
 import com.dev.vault.projectservice.model.request.ProjectRequest;
 import com.dev.vault.projectservice.service.interfaces.ProjectManagementService;
+import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -31,6 +29,21 @@ public class ProjectManagementController {
     @PostMapping("/create-project")
     public ResponseEntity<ProjectRequest> createProject(@RequestBody ProjectRequest projectRequest) {
         return new ResponseEntity<>(projectManagementService.createProject(projectRequest), CREATED);
+    }
+
+
+    /**
+     * Lists all the members of the specified project.
+     *
+     * @param projectId the members of the project that we want to see
+     * @return list of project members as {@link ProjectMembersDto}
+     * @throws ResourceNotFoundException if the project was not found
+     */
+    @GetMapping("/list-members/{projectId}")
+    public ResponseEntity<ProjectMembersDto> listProjectMembers(
+            @PathVariable Long projectId
+    ) throws ResourceNotFoundException {
+        return ResponseEntity.ok(projectManagementService.listMembersOfProject(projectId));
     }
 
 }

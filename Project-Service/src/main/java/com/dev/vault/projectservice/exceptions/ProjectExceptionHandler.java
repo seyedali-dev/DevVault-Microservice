@@ -24,6 +24,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MissingAuthenticationHeaderException.class)
     public ResponseEntity<ErrorResponse> missingAuthenticationHeaderExceptionHandler(MissingAuthenticationHeaderException e) {
         log.error("❌👮‍♂️ MissingAuthenticationHeaderException triggered - Cause ❌👮‍♂️: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
@@ -37,6 +38,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, Object>> constraintViolationExceptionHandler(ConstraintViolationException ex) {
         log.error("❌🚫 ConstraintViolationException triggered - Cause ❌🚫: {{}}", ex.getMessage());
+        ex.printStackTrace();
         Map<String, Object> map = new HashMap<>();
         ex.getConstraintViolations().forEach(constraintViolation -> {
             String message = constraintViolation.getMessage();
@@ -50,6 +52,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, Object>> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException ex) {
         log.error("❌🔀 MethodArgumentTypeMismatchException triggered - Cause ❌🔀: {{}}", ex.getMessage());
+        ex.printStackTrace();
         Map<String, Object> map = new HashMap<>();
         map.put(ex.getName(), ex.getMessage());
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
@@ -59,6 +62,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException e) {
         log.error("❌🔍 ResourceNotFoundException triggered - Cause ❌🔍: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
@@ -72,6 +76,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DevVaultException.class)
     public ResponseEntity<ErrorResponse> devVaultExceptionHandler(DevVaultException e) {
         log.error("❌⭕ DevVaultException triggered - Cause ⭕❌: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
@@ -85,6 +90,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> resourceAlreadyExistsExceptionHandler(ResourceAlreadyExistsException e) {
         log.error("❌🛑 ResourceAlreadyExistsException triggered - Cause ❌🛑: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
@@ -98,6 +104,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthenticationFailedException.class)
     public ResponseEntity<ErrorResponse> authenticationFailedExceptionHandler(AuthenticationFailedException e) {
         log.error("❌🔒 AuthenticationFailedException triggered - Cause ❌🔒: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
@@ -111,6 +118,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ApiResponse> expiredJwtExceptionHandler(ExpiredJwtException e) {
         log.error("❌⌛ ExpiredJwtException triggered - Cause ❌⌛: {{}}", e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.REQUEST_TIMEOUT);
     }
 
@@ -118,6 +126,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<ApiResponse> signatureExceptionHandler(SignatureException e) {
         log.error("❌🔒 SignatureException triggered - Cause ❌🔒: {{}}", e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.REQUEST_TIMEOUT);
     }
 
@@ -125,6 +134,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotLeaderOfProjectException.class)
     public ResponseEntity<ErrorResponse> notLeaderOfProjectExceptionHandler(NotLeaderOfProjectException e) {
         log.error("❌⛔ NotLeaderOfProjectException triggered - Cause ❌⛔: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
@@ -138,6 +148,7 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotMemberOfProjectException.class)
     public ResponseEntity<ErrorResponse> notMemberOfProjectExceptionHandler(NotMemberOfProjectException e) {
         log.error("❌🚫 NotMemberOfProjectException triggered - Cause ❌🚫: {{}}", e.getMessage());
+        e.printStackTrace();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .httpStatus(e.getHttpStatus())
