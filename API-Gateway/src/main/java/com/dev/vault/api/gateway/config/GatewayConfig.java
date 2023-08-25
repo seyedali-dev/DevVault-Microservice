@@ -33,6 +33,21 @@ public class GatewayConfig {
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
                         .uri("lb://PROJECT-SERVICE")
                 )
+                .route("project-search-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/search_project/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://PROJECT-SERVICE")
+                )
+                .route("project-join_coupon-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/join_coupon/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://PROJECT-SERVICE")
+                )
+                .route("project-join_request-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/join_request/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://PROJECT-SERVICE")
+                )
                 .build();
     }
 

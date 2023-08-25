@@ -13,15 +13,14 @@ public interface JoinProjectService {
 
     /**
      * Sends a join project request for the specified project on behalf of the current user. All users are allowed.
-     * Only allowed if the user has 'JoinToken' that the project leader, or project admin generated.
+     * Only allowed if the user is not a member already.
      *
-     * @param projectId  the ID of the project to send the join project request to
-     * @param joinCoupon the coupon that the leader or admin gave to user
+     * @param projectId the ID of the project to send the join project request to
      * @return JoinResponse indicating whether the join project request was sent successfully and its status
      * @throws ResourceAlreadyExistsException if the user is already a member of the project or has already sent a join project request for the project
      * @throws ResourceNotFoundException      if the project or user cannot be found
      */
-    JoinResponse sendJoinRequest(Long projectId, String joinCoupon)
+    JoinResponse sendJoinRequest(Long projectId)
             throws ResourceAlreadyExistsException, ResourceNotFoundException;
 
 
@@ -33,7 +32,7 @@ public interface JoinProjectService {
      * @param joinStatus the status of the join requests to retrieve
      * @return a List of JoinProjectDto objects containing information about each join request
      */
-    List<JoinProjectResponse> getJoinRequestsByProjectIdAndStatus(Long projectId, JoinStatus joinStatus)
+    List<JoinProjectResponse> getJoinRequestsByProjectIdAndPendingStatus(Long projectId, JoinStatus joinStatus)
             throws ResourceNotFoundException, NotLeaderOfProjectException;
 
 

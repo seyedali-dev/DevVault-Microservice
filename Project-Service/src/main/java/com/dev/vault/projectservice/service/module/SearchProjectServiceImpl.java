@@ -9,6 +9,7 @@ import com.dev.vault.projectservice.model.response.SearchResponse;
 import com.dev.vault.projectservice.repository.ProjectMembersRepository;
 import com.dev.vault.projectservice.repository.ProjectRepository;
 import com.dev.vault.projectservice.service.interfaces.SearchProjectService;
+import com.dev.vault.projectservice.util.ProjectUtilsImpl;
 import com.dev.vault.shared.lib.exceptions.DevVaultException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
@@ -31,8 +32,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class SearchProjectServiceImpl implements SearchProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMembersRepository projectMembersRepository;
     private final AuthUserFeignClient authUserFeignClient;
+    private final ProjectUtilsImpl projectUtils;
 
     /**
      * {@inheritDoc}
@@ -45,14 +46,14 @@ public class SearchProjectServiceImpl implements SearchProjectService {
         // Map each project to a SearchResponse object and collect them into a list
         return projects.stream().map(project -> {
                     try {
-                        UserDTO leaderUserDTO = authUserFeignClient.getUserDTO(project.getLeaderId());
+                        UserDTO leaderUserDTO = authUserFeignClient.getUserDTOById(project.getLeaderId());
 
                         return SearchResponse.builder()
                                 .projectId(project.getProjectId())
                                 .projectName(project.getProjectName())
                                 .projectDescription(project.getDescription())
                                 .leaderName(leaderUserDTO.getUsername())
-                                .members(new ProjectMembersDto(getUserDtoList(project)))
+                                .members(new ProjectMembersDto(projectUtils.getUserDtoList(project)))
                                 .build();
 
                     } catch (Exception e) {
@@ -79,45 +80,17 @@ public class SearchProjectServiceImpl implements SearchProjectService {
         // Map each project to a SearchResponse object and collect them into a list
         return projects.stream()
                 .map(project -> {
-                            String leaderName = authUserFeignClient.getUserNameById(project.getLeaderId());
+                            String leaderName = authUserFeignClient.getUserDTOById(project.getLeaderId()).getUsername();
 
                             return SearchResponse.builder()
                                     .projectId(project.getProjectId())
                                     .projectName(project.getProjectName())
                                     .projectDescription(project.getDescription())
                                     .leaderName(leaderName)
-                                    .members(new ProjectMembersDto(getUserDtoList(project)))
+                                    .members(new ProjectMembersDto(projectUtils.getUserDtoList(project)))
                                     .build();
                         }
                 ).toList();
-    }
-
-
-    /**
-     * Returns a list of UserDto objects for a given project.
-     *
-     * @param project The project to get the list of members for.
-     * @return A list of UserDto objects representing the members of the project.
-     */
-    private List<UserMembersDto> getUserDtoList(Project project) {
-        // Get all project members associated with the given project
-        List<ProjectMembers> members = projectMembersRepository.findByProject(project);
-
-        // Create a list of UserDto objects for the project members
-        ArrayList<UserMembersDto> userDtos = new ArrayList<>();
-        for (ProjectMembers projectMembers : members) {
-            UserDTO memberUserDTO = authUserFeignClient.getUserDTO(projectMembers.getUserId());
-
-            UserMembersDto userDto = UserMembersDto.builder()
-                    .username(memberUserDTO.getUsername())
-                    .major(memberUserDTO.getMajor())
-                    .education(memberUserDTO.getEducation())
-                    .role(memberUserDTO.getRoles()
-                            .stream().map(roles -> roles.getRole().name()).toList()
-                    ).build();
-            userDtos.add(userDto);
-        }
-        return userDtos;
     }
 
 }

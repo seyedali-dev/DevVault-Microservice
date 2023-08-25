@@ -1,14 +1,18 @@
 package com.dev.vault.authenticationservice.controller.intercommunication;
 
+import com.dev.vault.authenticationservice.config.jwt.JwtService;
 import com.dev.vault.authenticationservice.model.entity.Roles;
 import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.repository.RolesRepository;
 import com.dev.vault.authenticationservice.repository.UserRepository;
+import com.dev.vault.shared.lib.exceptions.AuthenticationFailedException;
+import com.dev.vault.shared.lib.exceptions.MissingAuthenticationHeaderException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.RolesDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -16,14 +20,19 @@ import java.util.Set;
 
 import static com.dev.vault.shared.lib.model.enums.Role.PROJECT_LEADER;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    @Value("${token.prefix}")
+    private String TOKEN_PREFIX;
+
     private final RolesRepository rolesRepository;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     public void add_ProjectLeaderRole(Long userId) {
         Roles projectLeaderRole = getProjectLeaderRole();
@@ -95,6 +104,25 @@ public class UserService {
                 .education(user.getEducation())
                 .roles(rolesDTO)
                 .build();
+    }
+
+
+    public UserDTO getCurrentUserAsDTO(String authHeader) {
+        if (authHeader == null) {
+            log.error("🔐 Authentication header is missing 🔐");
+            throw new MissingAuthenticationHeaderException("auth header is missing", UNAUTHORIZED);
+        }
+
+        if (!authHeader.startsWith(TOKEN_PREFIX)) {
+            log.error("⭕ Provided invalid authentication header ⭕");
+            throw new AuthenticationFailedException("Authentication header is not valid", UNAUTHORIZED);
+        }
+
+        String token = authHeader.substring(TOKEN_PREFIX.length());
+        String email = jwtService.extractUsername(token);
+        User user = getUserByEmail(email);
+
+        return getUserDTOById(user.getUserId());
     }
 
 }
