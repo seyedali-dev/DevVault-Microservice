@@ -8,6 +8,7 @@ import com.dev.vault.projectservice.model.entity.UserProjectRole;
 import com.dev.vault.projectservice.repository.ProjectMembersRepository;
 import com.dev.vault.projectservice.repository.UserProjectRoleRepository;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
+import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.model.dto.RolesDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import com.dev.vault.shared.lib.model.enums.Role;
@@ -47,7 +48,7 @@ public class ProjectUtilsImpl implements ProjectUtils {
                                 roles.getRole().equals(Role.PROJECT_ADMIN)
                 ).findFirst()
                 .orElseThrow(() -> {
-                    log.error("😖 Oops... You are not a PROJECT `LEADER/ADMIN` 😖");
+                    log.error("😖 Oops... You are not a PROJECT `LEADER or ADMIN` 😖");
                     return new NotLeaderOfProjectException("😖 You are not a Leader or Admin of this project 😖", FORBIDDEN, FORBIDDEN.value());
                 });
 

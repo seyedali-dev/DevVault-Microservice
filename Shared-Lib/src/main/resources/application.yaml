@@ -1,9 +1,9 @@
 server:
-  port: 8082
+  port: 8080
 
 spring:
   application:
-    name: SHARED-LIB
+    name: 3-SHARED-LIB
 ---
 
 #config-server configuration

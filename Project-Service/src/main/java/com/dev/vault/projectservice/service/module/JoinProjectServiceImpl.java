@@ -149,7 +149,7 @@ public class JoinProjectServiceImpl implements JoinProjectService {
         // Check if the user is the leader or admin of the project
         String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
         if (!projectUtils.isLeaderOrAdminOfProject(joinProject.getProject(), authFeignClient.getCurrentUsers_DTO(requestHeader)))
-            throw new NotLeaderOfProjectException("👮🏻 you are not the leader or admin of this project 👮🏻");
+            throw new NotLeaderOfProjectException("👮🏻 you are not the leader or admin of this project 👮🏻", FORBIDDEN);
 
         // Update the status of the joinProject
         joinProject.setStatus(joinStatus);

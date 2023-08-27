@@ -11,6 +11,9 @@ public class NotLeaderOfProjectException extends RuntimeException {
     private HttpStatus httpStatus;
     private int httpStatusCode;
 
+    public NotLeaderOfProjectException() {
+    }
+
     public NotLeaderOfProjectException(String message) {
         super(message);
     }

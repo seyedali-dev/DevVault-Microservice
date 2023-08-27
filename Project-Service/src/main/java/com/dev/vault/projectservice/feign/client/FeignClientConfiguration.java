@@ -9,7 +9,7 @@ public class FeignClientConfiguration {
 
     @Bean
     public ErrorDecoder errorDecoder() {
-        return new CustomErrorDecoder();
+        return new ProjectErrorDecoder();
     }
 
 }
