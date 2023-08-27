@@ -5,6 +5,10 @@ import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.dev.vault.TaskService.model.request.TaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.service.interfaces.TaskManagementService;
+import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
+import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
+import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
+import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +35,10 @@ public class TaskManagementController {
      * @return a ResponseEntity containing a TaskResponse object and an HTTP status code
      */
     @PostMapping("/new-task/{projectId}")
-    public ResponseEntity<TaskResponse> newTask(@Valid @PathVariable Long projectId, @RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<TaskResponse> newTask(
+            @Valid @PathVariable Long projectId,
+            @RequestBody TaskRequest taskRequest
+    ) throws ResourceNotFoundException, ResourceAlreadyExistsException {
         return new ResponseEntity<>(taskService.createNewTask(projectId, taskRequest), HttpStatus.CREATED);
     }
 
@@ -42,13 +49,16 @@ public class TaskManagementController {
      * @param taskId      the ID of the task to update
      * @param taskRequest the request object containing the updated details of the task
      * @return a ResponseEntity containing a TaskResponse object and an HTTP status code
+     * @throws ResourceNotFoundException   if the task is not found
+     * @throws NotMemberOfProjectException if the requesting user is not a member of the project that the task is in
+     * @throws NotLeaderOfProjectException if the requesting user is not leader or admin of the project that the task is in
      */
-    @PutMapping("/updateTask/{taskId}") //TODO
+    @PutMapping("/update-task/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(
-            @PathVariable Long taskId,
+            @Valid @PathVariable Long taskId,
             @RequestBody TaskRequest taskRequest
-    ) {
-        return null;
+    ) throws ResourceNotFoundException, NotMemberOfProjectException, NotLeaderOfProjectException {
+        return ResponseEntity.ok(taskService.updateTask(taskId, taskRequest));
     }
 
 
