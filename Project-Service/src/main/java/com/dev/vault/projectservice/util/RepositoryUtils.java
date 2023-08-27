@@ -20,7 +20,11 @@ public class RepositoryUtils {
         return projectRepository.findById(projectId)
                 .orElseThrow(() -> {
                     log.info("😖 huh... it seems the project with {{}} wasn't found in the db 😖", projectId);
-                    return new ResourceNotFoundException("", NOT_FOUND, NOT_FOUND.value());
+                    return new ResourceNotFoundException(
+                            "😖 huh... it seems the project with {{" + projectId + "}} wasn't found in the db 😖",
+                            NOT_FOUND,
+                            NOT_FOUND.value()
+                    );
                 });
     }
 

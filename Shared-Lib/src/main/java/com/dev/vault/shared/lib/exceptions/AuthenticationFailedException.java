@@ -11,6 +11,9 @@ public class AuthenticationFailedException extends RuntimeException {
     private HttpStatus httpStatus;
     private int statusCode;
 
+    public AuthenticationFailedException() {
+    }
+
     public AuthenticationFailedException(String message) {
         super(message);
     }

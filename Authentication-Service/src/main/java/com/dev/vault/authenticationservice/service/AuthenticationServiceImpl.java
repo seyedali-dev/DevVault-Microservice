@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.dev.vault.shared.lib.model.enums.Role.TEAM_MEMBER;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Authentication implementation: Registration & Login.
@@ -69,12 +69,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (foundUser.isPresent()) {
             log.info("❌ This user already exists! provide unique email. ❌");
-            throw new ResourceAlreadyExistsException("User", "Email", registerRequest.getEmail());
+            throw new ResourceAlreadyExistsException(
+                    "⭕ User with email {" + registerRequest.getEmail() + "} already exists.. provide a unique email ⭕",
+                    BAD_REQUEST,
+                    BAD_REQUEST.value()
+            );
         }
 
         // find the TEAM_MEMBER role and assign it to newly created user as default role
         Roles teamMemberRole = rolesRepository.findByRole(TEAM_MEMBER)
-                .orElseThrow(() -> new ResourceNotFoundException("Role", "RoleName", TEAM_MEMBER.name()));
+                .orElseThrow(() -> new ResourceNotFoundException("Role with TEAM_MEMBER role was not found", NOT_FOUND, NOT_FOUND.value()));
 
         // create a new user object and map the properties from the register request
         User user = modelMapper.map(registerRequest, User.class);
@@ -119,7 +123,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void verifyAccount(String token) {
         // find the verification token in the database
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ResourceNotFoundException("Verification token", "token", token));
+                .orElseThrow(() -> new ResourceNotFoundException("Verification token with token {" + token + "} was not found", NOT_FOUND, NOT_FOUND.value()));
 
         // set the user's active status to true and save the changes to the database
         User user = verificationToken.getUser();
@@ -163,20 +167,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * {@inheritDoc}
      */
-//    @Override
-//    public Long getCurrentUser() {
-//        // get the email of the currently authenticated user from the security context
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String email = authentication.getName();
-//
-//        // find the user object in the database using the email
-//        Optional<User> foundUser = userRepository.findByEmail(email);
-//
-//        return foundUser
-//                .orElseThrow(() ->
-//                        new AuthenticationFailedException("❌❌❌ User: '" + email + "' is not authorized! ❌❌❌", UNAUTHORIZED, 401)
-//                ).getUserId();
-//    }
     @Override
     public Long getCurrentUser() {
         // Step 1: Get the authentication object from the security context
@@ -184,7 +174,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Check if the user is authenticated
         if (authentication == null || !authentication.isAuthenticated())
-            throw new AuthenticationFailedException("❌❌❌ User is not authenticated! ❌❌❌");
+            throw new AuthenticationFailedException("❌❌❌ User is not authenticated! ❌❌❌", UNAUTHORIZED, UNAUTHORIZED.value());
 
         // Step 2: Get the email of the authenticated user
         String email = authentication.getName();

@@ -75,7 +75,7 @@ public class SearchProjectServiceImpl implements SearchProjectService {
 
         // Throw an exception if no project is found
         if (projects == null || projects.isEmpty())
-            throw new ResourceNotFoundException(String.format("Project with given name: {%s} was not found", projectName), NOT_FOUND);
+            throw new ResourceNotFoundException(String.format("😖 huh... it seems the project with name {{%s}} wasn't found in the db 😖", projectName), NOT_FOUND);
 
         // Map each project to a SearchResponse object and collect them into a list
         return projects.stream()

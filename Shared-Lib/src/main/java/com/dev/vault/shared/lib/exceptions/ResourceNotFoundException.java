@@ -11,8 +11,11 @@ public class ResourceNotFoundException extends RuntimeException {
     private HttpStatus httpStatus;
     private int statusCode;
 
-    public ResourceNotFoundException(String resource, String name, String value) {
-        super(String.format("%s not found with %s: %s", resource, name, value));
+    public ResourceNotFoundException() {
+    }
+
+    public ResourceNotFoundException(String message) {
+        super(message);
     }
 
     public ResourceNotFoundException(String message, HttpStatus httpStatus, int statusCode) {

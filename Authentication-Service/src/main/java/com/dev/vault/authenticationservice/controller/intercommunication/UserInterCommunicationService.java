@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserInterCommunicationService {
 
     @Value("${token.prefix}")
     private String TOKEN_PREFIX;
@@ -56,7 +56,7 @@ public class UserService {
         return rolesRepository.findByRole(PROJECT_LEADER)
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems we don't have roles with {{}} in our db 😖", PROJECT_LEADER);
-                    return new ResourceNotFoundException("Roles with the given roleName was not found", NOT_FOUND);
+                    return new ResourceNotFoundException("Roles with the given roleName was not found", NOT_FOUND, NOT_FOUND.value());
                 });
     }
 
@@ -65,7 +65,7 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems we don't have user with {{}} in our db 😖", userId);
-                    return new ResourceNotFoundException("User with the given userId was not found", NOT_FOUND);
+                    return new ResourceNotFoundException("User with the given userId was not found", NOT_FOUND, NOT_FOUND.value());
                 });
     }
 
@@ -74,7 +74,7 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems we don't have user with {{}} in our db 😖", email);
-                    return new ResourceNotFoundException("User with the given email was not found", NOT_FOUND);
+                    return new ResourceNotFoundException("User with the given email was not found", NOT_FOUND, NOT_FOUND.value());
                 });
     }
 

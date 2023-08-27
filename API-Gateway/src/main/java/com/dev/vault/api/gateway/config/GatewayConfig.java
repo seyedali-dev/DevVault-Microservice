@@ -20,33 +20,40 @@ public class GatewayConfig {
                 // AUTHENTICATION-SERVICE
                 .route("authentication-service-route", predicateSpec -> predicateSpec
                         .path("/api/v1/auth/**")
-                        .uri("lb://AUTHENTICATION-SERVICE")
+                        .uri("lb://4-AUTHENTICATION-SERVICE")
                 )
                 .route("demo-route", predicateSpec -> predicateSpec
                         .path("/authenticated/**")
-                        .uri("lb://AUTHENTICATION-SERVICE")
+                        .uri("lb://4-AUTHENTICATION-SERVICE")
                 )
 
                 // PROJECT-SERVICE
                 .route("project-route", predicateSpec -> predicateSpec
                         .path("/api/v1/project/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
-                        .uri("lb://PROJECT-SERVICE")
+                        .uri("lb://5-PROJECT-SERVICE")
                 )
                 .route("project-search-route", predicateSpec -> predicateSpec
                         .path("/api/v1/search_project/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
-                        .uri("lb://PROJECT-SERVICE")
+                        .uri("lb://5-PROJECT-SERVICE")
                 )
                 .route("project-join_coupon-route", predicateSpec -> predicateSpec
                         .path("/api/v1/join_coupon/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
-                        .uri("lb://PROJECT-SERVICE")
+                        .uri("lb://5-PROJECT-SERVICE")
                 )
                 .route("project-join_request-route", predicateSpec -> predicateSpec
                         .path("/api/v1/join_request/**")
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
-                        .uri("lb://PROJECT-SERVICE")
+                        .uri("lb://5-PROJECT-SERVICE")
+                )
+
+                //TASK-SERVICE
+                .route("task-management-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/task/management/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://6-TASK-SERVICE")
                 )
                 .build();
     }

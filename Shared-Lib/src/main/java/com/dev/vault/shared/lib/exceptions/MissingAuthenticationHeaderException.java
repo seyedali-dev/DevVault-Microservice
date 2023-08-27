@@ -10,6 +10,9 @@ public class MissingAuthenticationHeaderException extends RuntimeException {
 
     private HttpStatus httpStatus;
 
+    public MissingAuthenticationHeaderException() {
+    }
+
     public MissingAuthenticationHeaderException(String message, HttpStatus httpStatus) {
         super(message);
         this.httpStatus = httpStatus;

@@ -1,8 +1,8 @@
 package com.dev.vault.authenticationservice.config;
 
-import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.repository.UserRepository;
+import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
@@ -26,7 +28,13 @@ public class ApplicationConfiguration {
     public UserDetailsService userDetailsService() {
         return email -> {
             User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new ResourceNotFoundException("User", "Email", email));
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "😖⭕ huh... it seems the user with {} email was not found ⭕😖",
+                                    NOT_FOUND,
+                                    NOT_FOUND.value()
+                            )
+                    );
 
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(),

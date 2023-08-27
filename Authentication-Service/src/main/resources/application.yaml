@@ -1,11 +1,11 @@
 #file: noinspection SpringBootApplicationYaml
 # -> this is for suppressing `config-server configuration` warning
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
-    name: AUTHENTICATION-SERVICE
+    name: 4-AUTHENTICATION-SERVICE
 ---
 
 #config-server configuration

@@ -11,8 +11,7 @@ public class ResourceAlreadyExistsException extends RuntimeException {
     private HttpStatus httpStatus;
     private int statusCode;
 
-    public ResourceAlreadyExistsException(String resource, String request, String value) {
-        super(String.format("The Resource %s, with %s: '%s' already exists!", resource, request, value));
+    public ResourceAlreadyExistsException() {
     }
 
     public ResourceAlreadyExistsException(String message) {

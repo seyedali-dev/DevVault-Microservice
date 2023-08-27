@@ -17,9 +17,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/inter-communication")
-public class ServiceInterCommunicationController {
+public class InterCommunicationController {
 
-    private final UserService userService;
+    private final UserInterCommunicationService userInterCommunicationService;
 
 
     /**
@@ -30,7 +30,7 @@ public class ServiceInterCommunicationController {
      */
     @GetMapping("/current-user-dto")
     public UserDTO getCurrentUsers_DTO(@RequestHeader("Authorization") String authHeader) {
-        return userService.getCurrentUserAsDTO(authHeader);
+        return userInterCommunicationService.getCurrentUserAsDTO(authHeader);
     }
 
 
@@ -42,7 +42,7 @@ public class ServiceInterCommunicationController {
      */
     @GetMapping("/current-user-id")
     public Long getCurrentUsers_Id(@RequestHeader("Authorization") String authHeader) {
-        return userService.getCurrentUserAsDTO(authHeader).getUserId();
+        return userInterCommunicationService.getCurrentUserAsDTO(authHeader).getUserId();
     }
 
 
@@ -57,7 +57,7 @@ public class ServiceInterCommunicationController {
     @PostMapping("/add-leader-role/{userId}")
     @ResponseStatus(CREATED)
     public ResponseEntity<String> addProjectLeaderRoleToUser(@PathVariable Long userId) {
-        userService.add_ProjectLeaderRole(userId);
+        userInterCommunicationService.add_ProjectLeaderRole(userId);
         return new ResponseEntity<>("PROJECT_LEADER role added to user", CREATED);
     }
 
@@ -70,7 +70,7 @@ public class ServiceInterCommunicationController {
      */
     @GetMapping("/project-leader-role-id")
     public Long getProjectLeaderRoleId() {
-        return userService.getProjectLeaderRole().getRoleId();
+        return userInterCommunicationService.getProjectLeaderRole().getRoleId();
     }
 
 
@@ -83,7 +83,7 @@ public class ServiceInterCommunicationController {
      */
     @GetMapping("/get-user/{userId}")
     public UserDTO getUserDTOById(@PathVariable Long userId) {
-        return userService.getUserDTOById(userId);
+        return userInterCommunicationService.getUserDTOById(userId);
     }
 
 }

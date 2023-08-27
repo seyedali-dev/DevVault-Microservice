@@ -11,6 +11,9 @@ public class NotMemberOfProjectException extends RuntimeException {
     private HttpStatus httpStatus;
     private int status;
 
+    public NotMemberOfProjectException() {
+    }
+
     public NotMemberOfProjectException(String message) {
         super(message);
     }
