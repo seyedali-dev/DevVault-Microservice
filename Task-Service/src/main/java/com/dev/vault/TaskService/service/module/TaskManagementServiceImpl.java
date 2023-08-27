@@ -9,6 +9,7 @@ import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.repository.TaskRepository;
 import com.dev.vault.TaskService.repository.TaskUserRepository;
 import com.dev.vault.TaskService.service.interfaces.TaskManagementService;
+import com.dev.vault.TaskService.util.RepositoryUtils;
 import com.dev.vault.TaskService.util.TaskUtils;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
@@ -39,6 +40,7 @@ public class TaskManagementServiceImpl implements TaskManagementService {
 
     private final TaskUserRepository taskUserRepository;
     private final TaskRepository taskRepository;
+    private final RepositoryUtils repositoryUtils;
     private final TaskUtils taskUtils;
     private final AuthUserFeignClient authUserFeignClient;
     private final ProjectUtilFeignClient projectUtilFeignClient;
@@ -58,7 +60,7 @@ public class TaskManagementServiceImpl implements TaskManagementService {
 
         Task task = buildAndSaveTask(projectId, taskRequest, currentUser.getUserId());
 
-        return taskUtils.buildTaskResponse_ForTaskCreation(task);
+        return taskUtils.buildTaskResponse_ForTask_CreateUpdate(task);
     }
 
 
@@ -109,6 +111,36 @@ public class TaskManagementServiceImpl implements TaskManagementService {
                 .task(task)
                 .build();
         return taskUserRepository.save(taskUser);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TaskResponse updateTask(Long taskId, TaskRequest taskRequest) {
+        Task foundTask = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
+        updateTaskDetails(foundTask, taskRequest);
+        return taskUtils.buildTaskResponse_ForTask_CreateUpdate(foundTask);
+    }
+
+    private void updateTaskDetails(Task foundTask, TaskRequest taskRequest) {
+        if (taskRequest.getTaskName() != null)
+            foundTask.setTaskName(taskRequest.getTaskName());
+
+        if (taskRequest.getTaskPriority() != null)
+            foundTask.setTaskPriority(taskRequest.getTaskPriority());
+
+        if (taskRequest.getTaskStatus() != null)
+            foundTask.setTaskStatus(taskRequest.getTaskStatus());
+
+        if (taskRequest.getDescription() != null)
+            foundTask.setDescription(taskRequest.getDescription());
+
+        if (taskRequest.getDueDate() != null)
+            foundTask.setDueDate(taskRequest.getDueDate());
+
+        taskRepository.save(foundTask);
     }
 
 }

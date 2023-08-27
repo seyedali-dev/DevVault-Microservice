@@ -27,7 +27,6 @@ public class TaskUtils {
     private final TaskRepository taskRepository;
     private final AuthUserFeignClient authFeignClient;
     private final ProjectUtilFeignClient projectFeignClient;
-    private final TaskUserRepository taskUserRepository;
 
     /**
      * Checks if a task with the same name already exists in the project
@@ -89,27 +88,6 @@ public class TaskUtils {
 //    }
 //
 //
-//    /**
-//     * Builds a TaskResponse object with information about the assigned task and its assigned users.
-//     *
-//     * @param task      the assigned task
-//     * @param projectId the project the task belongs to
-//     * @param map       the map of responses for each assigned user
-//     * @return a TaskResponse object with information about the assigned task and its assigned users
-//     */
-//    public TaskResponse buildTaskResponse(
-//            Task task,
-//            long projectId,
-//            Map<String, String> map
-//    ) {
-//        TaskResponse taskResponse = new TaskResponse();
-//        taskResponse.setTaskName(task.getTaskName());
-//        taskResponse.setTaskStatus(task.getTaskStatus());
-//        taskResponse.setDueDate(task.getDueDate());
-//        taskResponse.setProjectName(projectFeignClient.getProjectAsDTO(projectId).getProjectName());
-//        taskResponse.setAssignedUsers(map);
-//        return taskResponse;
-//    }
 //
 //
 //    /**
@@ -151,12 +129,12 @@ public class TaskUtils {
 //
 //
     /**
-     * Builds a TaskResponse object with information about the newly created task.
+     * Builds a TaskResponse object with information about the newly created task and updating a task.
      *
      * @param task the assigned task
-     * @return a TaskResponse object with information about the newly created task
+     * @return a TaskResponse object with information about the newly created task and updated task.
      */
-    public TaskResponse buildTaskResponse_ForTaskCreation(Task task) {
+    public TaskResponse buildTaskResponse_ForTask_CreateUpdate(Task task) {
         ProjectDTO project = projectFeignClient.getProjectAsDTO(task.getProjectId());
 
         Map<String, String> assignededUsersMap = new HashMap<>();
@@ -164,24 +142,6 @@ public class TaskUtils {
             UserDTO assignedUser = authFeignClient.getUserDTOById(taskUser.getTaskUserId());
             assignededUsersMap.put(assignedUser.getUserId().toString(), assignedUser.getUsername());
         });
-
-        /*
-            Map<String, String> assignedUsersMap = new HashMap<>();
-        if (task.getAssignedUsers().isEmpty()) {
-            UserDTO assignedUser = authFeignClient.getUserDTOById(task.getCreatedByUserId());
-            TaskUser taskUser = TaskUser.builder()
-                    .task(task)
-                    .userId(assignedUser.getUserId())
-                    .build();
-
-            task.setAssignedUsers(List.of(taskUser));
-        } else {
-            task.getAssignedUsers().forEach(taskUser -> {
-                UserDTO assignedUser = authFeignClient.getUserDTOById(taskUser.getTaskUserId());
-                assignedUsersMap.put(assignedUser.getUserId().toString(), assignedUser.getUsername());
-            });
-        }
-        */
 
         return TaskResponse.builder()
                 .taskName(task.getTaskName())
