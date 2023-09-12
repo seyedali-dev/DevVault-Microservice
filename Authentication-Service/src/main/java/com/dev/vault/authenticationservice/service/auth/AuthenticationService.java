@@ -1,4 +1,4 @@
-package com.dev.vault.authenticationservice.service;
+package com.dev.vault.authenticationservice.service.auth;
 
 import com.dev.vault.shared.lib.exceptions.AuthenticationFailedException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;

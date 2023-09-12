@@ -2,7 +2,7 @@ package com.dev.vault.authenticationservice.controller.auth;
 
 import com.dev.vault.authenticationservice.model.request.AuthenticationRequest;
 import com.dev.vault.authenticationservice.model.request.RegisterRequest;
-import com.dev.vault.authenticationservice.service.AuthenticationService;
+import com.dev.vault.authenticationservice.service.auth.AuthenticationService;
 import com.dev.vault.shared.lib.model.response.ApiResponse;
 import com.dev.vault.shared.lib.model.response.AuthenticationResponse;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package com.dev.vault.authenticationservice.controller.intercommunication;
+package com.dev.vault.authenticationservice.service.intercommunication;
 
 import com.dev.vault.authenticationservice.config.jwt.JwtService;
 import com.dev.vault.authenticationservice.model.entity.Roles;
