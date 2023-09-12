@@ -1,4 +1,4 @@
-package com.dev.vault.authenticationservice.service;
+package com.dev.vault.authenticationservice.service.auth;
 
 import com.dev.vault.authenticationservice.config.jwt.JwtService;
 import com.dev.vault.authenticationservice.model.entity.Roles;

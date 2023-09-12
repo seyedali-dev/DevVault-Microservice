@@ -63,14 +63,17 @@ public class TaskManagementController {
 
 
     /**
-     * Retrieves the details of a specific task.
+     * Retrieves the details of a specific task by its ID.
      *
      * @param taskId the ID of the task to retrieve
      * @return a ResponseEntity containing a TaskResponse object and an HTTP status code
+     * @throws ResourceNotFoundException if the task is not found
      */
-    @GetMapping("/task/{taskId}") //TODO
-    public ResponseEntity<TaskResponse> getTaskDetails(@PathVariable Long taskId) {
-        return null;
+    @GetMapping("/task/{taskId}")
+    public ResponseEntity<TaskResponse> getTaskDetails(
+            @PathVariable Long taskId
+    ) throws ResourceNotFoundException {
+        return ResponseEntity.ok(taskService.getTaskDetails(taskId));
     }
 
 
@@ -80,9 +83,10 @@ public class TaskManagementController {
      * @param taskId the ID of the task to delete
      * @return a ResponseEntity with an OK HTTP status code
      */
-    @DeleteMapping("/deleteTask/{taskId}") //TODO
+    @DeleteMapping("/deleteTask/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
-        return null;
+        taskService.deleteTask(taskId);
+        return ResponseEntity.ok().build();
     }
 
 
@@ -95,14 +99,14 @@ public class TaskManagementController {
      * @param assignedTo the ID of the user the tasks are assigned to
      * @return a ResponseEntity containing a list of TaskResponse objects and an HTTP status code
      */
-    @GetMapping("/searchTasks") //TODO
+    @GetMapping("/searchTasks")
     public ResponseEntity<List<TaskResponse>> searchTasks(
             @RequestParam(value = "status", required = false) TaskStatus status,
             @RequestParam(value = "priority", required = false) TaskPriority priority,
             @RequestParam(value = "projectId", required = false) Long projectId,
-            @RequestParam(value = "assignedTo", required = false) Long assignedTo
+            @RequestParam(value = "assignedTo", required = false) Long assignedTo_UserId
     ) {
-        return null;
+        return ResponseEntity.ok(taskService.searchTaskBasedOnDifferentCriteria(status, priority, projectId, assignedTo_UserId));
     }
 
 

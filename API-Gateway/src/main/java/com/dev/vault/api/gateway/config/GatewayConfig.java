@@ -60,7 +60,9 @@ public class GatewayConfig {
 
     // Used for putting the authentication filter before each specified url
     private GatewayFilter filterWithAuthentication() {
-        return (exchange, chain) -> authenticationFilter.apply((AuthenticationFilter.Config) null).filter(exchange, chain);
+        return (exchange, chain) -> authenticationFilter.apply(
+                (AuthenticationFilter.Config) null
+        ).filter(exchange, chain);
     }
 
 }

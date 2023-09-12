@@ -1,5 +1,6 @@
 package com.dev.vault.authenticationservice.controller.intercommunication;
 
+import com.dev.vault.authenticationservice.service.intercommunication.UserInterCommunicationService;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import com.dev.vault.shared.lib.model.enums.Role;

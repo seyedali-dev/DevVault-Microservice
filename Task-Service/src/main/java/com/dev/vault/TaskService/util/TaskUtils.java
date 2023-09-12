@@ -6,7 +6,6 @@ import com.dev.vault.TaskService.model.entity.Task;
 import com.dev.vault.TaskService.model.request.TaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.repository.TaskRepository;
-import com.dev.vault.TaskService.repository.TaskUserRepository;
 import com.dev.vault.shared.lib.model.dto.ProjectDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -134,7 +133,7 @@ public class TaskUtils {
      * @param task the assigned task
      * @return a TaskResponse object with information about the newly created task and updated task.
      */
-    public TaskResponse buildTaskResponse_ForTask_CreateUpdate(Task task) {
+    public TaskResponse buildTaskResponse(Task task) {
         ProjectDTO project = projectFeignClient.getProjectAsDTO(task.getProjectId());
 
         Map<String, String> assignededUsersMap = new HashMap<>();
