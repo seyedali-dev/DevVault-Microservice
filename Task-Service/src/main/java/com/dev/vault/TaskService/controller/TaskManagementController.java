@@ -96,7 +96,7 @@ public class TaskManagementController {
      * @param status     the status of the tasks to search for
      * @param priority   the priority of the tasks to search for
      * @param projectId  the ID of the project to search for tasks in
-     * @param assignedTo the ID of the user the tasks are assigned to
+     * @param assignedTo_UserId the ID of the user the tasks are assigned to
      * @return a ResponseEntity containing a list of TaskResponse objects and an HTTP status code
      */
     @GetMapping("/searchTasks")
