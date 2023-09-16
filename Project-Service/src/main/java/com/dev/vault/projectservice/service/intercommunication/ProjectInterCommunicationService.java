@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.controller.intercommunication;
+package com.dev.vault.projectservice.service.intercommunication;
 
 import com.dev.vault.projectservice.feign.client.AuthUserFeignClient;
 import com.dev.vault.projectservice.model.entity.Project;

@@ -11,12 +11,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<Task> findByProjectIdAndTaskName(Long projectId, String taskName);
 
-    Task findByProjectId(Long projectId);
+    Optional<Task> findByProjectId(Long projectId);
 
 
-    Task findByTaskPriority(TaskPriority taskPriority);
+    Optional<Task> findByTaskPriority(TaskPriority taskPriority);
 
 
-    Task findByTaskStatus(TaskStatus taskStatus);
+    Optional<Task> findByTaskStatus(TaskStatus taskStatus);
 
 }

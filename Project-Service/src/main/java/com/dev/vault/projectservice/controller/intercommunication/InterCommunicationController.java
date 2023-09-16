@@ -1,9 +1,9 @@
 package com.dev.vault.projectservice.controller.intercommunication;
 
+import com.dev.vault.projectservice.service.intercommunication.ProjectInterCommunicationService;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.ProjectDTO;
-import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

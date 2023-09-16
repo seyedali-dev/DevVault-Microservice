@@ -67,7 +67,6 @@ public class TaskManagementServiceImpl implements TaskManagementService {
         return taskUtils.buildTaskResponse(task);
     }
 
-
     private void validateUniqueName_Membership_Leadership_OfTask(Long projectId, TaskRequest taskRequest, long currentUserId) {
         // Check if the currentUser is a member of the project
         if (!projectUtilFeignClient.isMemberOfProject(projectId, currentUserId))
@@ -82,7 +81,6 @@ public class TaskManagementServiceImpl implements TaskManagementService {
             throw new ResourceAlreadyExistsException("⭕ Task {{" + taskRequest.getTaskName() + "}} already exists in db.. provide a unique name ⭕", BAD_REQUEST, BAD_REQUEST.value());
     }
 
-
     private Task buildAndSaveTask(Long projectId, TaskRequest taskRequest, long currentUserId) {
         Task task = mapper.map(taskRequest, Task.class);
         task.setCreatedByUserId(currentUserId);
@@ -95,7 +93,6 @@ public class TaskManagementServiceImpl implements TaskManagementService {
 
         return taskRepository.save(task);
     }
-
 
     private TaskUser buildAndSaveTaskUser(long currentUserId, Task task) {
         TaskUser taskUser = TaskUser.builder().userId(currentUserId).task(task).build();
@@ -156,13 +153,13 @@ public class TaskManagementServiceImpl implements TaskManagementService {
         List<TaskResponse> taskResponses = new ArrayList<>();
 
         if (status != null)
-            taskList.add(taskRepository.findByTaskStatus(status));
+            taskList.add(repositoryUtils.find_TaskByTaskStatus_OrElseThrow_ResourceNotException(status));
 
         if (priority != null)
-            taskList.add(taskRepository.findByTaskPriority(priority));
+            taskList.add(repositoryUtils.find_TaskByTaskPriority_OrElseThrow_ResourceNotException(priority));
 
         if (projectId != null)
-            taskList.add(taskRepository.findByProjectId(projectId));
+            taskList.add(repositoryUtils.find_TaskByProjectId_OrElseThrow_ResourceNotException(projectId));
 
         if (assignedTo_UserId != null) {
             taskList.add(

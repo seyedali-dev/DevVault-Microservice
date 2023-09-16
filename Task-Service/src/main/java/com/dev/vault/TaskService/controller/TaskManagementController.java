@@ -87,7 +87,7 @@ public class TaskManagementController {
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
         taskService.deleteTask(taskId);
         return ResponseEntity.ok().build();
-    }
+    } // TODO: only member and leader of project can delete a task
 
 
     /**
@@ -104,10 +104,10 @@ public class TaskManagementController {
             @RequestParam(value = "status", required = false) TaskStatus status,
             @RequestParam(value = "priority", required = false) TaskPriority priority,
             @RequestParam(value = "projectId", required = false) Long projectId,
-            @RequestParam(value = "assignedTo", required = false) Long assignedTo_UserId
+            @RequestParam(value = "assignedTo_UserId", required = false) Long assignedTo_UserId
     ) {
         return ResponseEntity.ok(taskService.searchTaskBasedOnDifferentCriteria(status, priority, projectId, assignedTo_UserId));
-    }
+    } // TODO
 
 
     /**

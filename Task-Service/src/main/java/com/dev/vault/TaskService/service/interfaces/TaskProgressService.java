@@ -14,7 +14,7 @@ public interface TaskProgressService {
      * @param taskId     the ID of the task to mark as completed.
      * @param projectId  the ID of the project that the task belongs to.
      * @param taskStatus the new status of the task (must be TaskStatus.COMPLETED).
-     * @throws DevVaultException           if the task has already been completed, or if the task status is not TaskStatus.COMPLETED.
+     * @throws DevVaultException           if the task has already been completed, or if the task status is not {@link TaskStatus#COMPLETED}.
      * @throws ResourceNotFoundException   if the task or project with the given IDs cannot be found in the database.
      * @throws NotMemberOfProjectException if the current user is not a member of the project with the given ID.
      * @throws NotLeaderOfProjectException if the current user is not a leader or admin of the project with the given ID.
