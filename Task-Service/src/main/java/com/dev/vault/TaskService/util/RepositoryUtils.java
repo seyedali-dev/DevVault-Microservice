@@ -26,7 +26,7 @@ public class RepositoryUtils {
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems the task with ID {{}} wasn't found in the db 😖", taskId);
                     return new ResourceNotFoundException(
-                            "😖 huh... it seems the project with  ID {{" + taskId + "}} wasn't found in the db 😖",
+                            "😖 huh... it seems the project with  ID {" + taskId + "} wasn't found in the db 😖",
                             NOT_FOUND,
                             NOT_FOUND.value()
                     );
@@ -44,7 +44,7 @@ public class RepositoryUtils {
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems the Task with Status {{}} wasn't found in the db 😖", status);
                     return new ResourceNotFoundException(
-                            "😖 huh... it seems the Task with Status {{" + status + "}} wasn't found in the db 😖",
+                            "😖 huh... it seems the Task with Status {" + status + "} wasn't found in the db 😖",
                             NOT_FOUND,
                             NOT_FOUND.value()
                     );
@@ -57,7 +57,7 @@ public class RepositoryUtils {
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems the Task with Priority {{}} wasn't found in the db 😖", priority);
                     return new ResourceNotFoundException(
-                            "😖 huh... it seems the Task with Priority {{" + priority + "}} wasn't found in the db 😖",
+                            "😖 huh... it seems the Task with Priority {" + priority + "} wasn't found in the db 😖",
                             NOT_FOUND,
                             NOT_FOUND.value()
                     );
@@ -70,7 +70,7 @@ public class RepositoryUtils {
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems the Task with ProjectID {{}} wasn't found in the db 😖", projectId);
                     return new ResourceNotFoundException(
-                            "😖 huh... it seems the Task with ProjectID {{" + projectId + "}} wasn't found in the db 😖",
+                            "😖 huh... it seems the Task with ProjectID {" + projectId + "} wasn't found in the db 😖",
                             NOT_FOUND,
                             NOT_FOUND.value()
                     );

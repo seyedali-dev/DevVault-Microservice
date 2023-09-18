@@ -46,53 +46,6 @@ public class TaskUtils {
     }
 
 
-//    /**
-//     * Loops through the list of user IDs and assigns the task to each user.
-//     *
-//     * @param task       the task to assign
-//     * @param projectId  the ID of the project the task belongs to
-//     * @param userIdList the list of user IDs to assign the task to
-//     */
-//    public void assignTaskToUserList(
-//            Task task, Long projectId,
-//            List<Long> userIdList,
-//            Map<String, String> statusResponseMap
-//    ) {
-//        for (Long userId : userIdList) {
-//            // Find the user by ID or throw a RecourseNotFoundException if it doesn't exist
-//            UserDTO userDTO = authFeignClient.getUserDTOById(userId);
-//
-//            // Check if the user is a member of the project, and add a response to the map if they're not
-//            if (!projectFeignClient.isMemberOfProject(projectId, userDTO)) {
-//                statusResponseMap.put(userDTO.getUsername(), "Fail: User with ID " + userId + " is not a member of project with ID " + projectId);
-//                continue;
-//            }
-//
-//            // Check if the task is already assigned to the user skip ahead, and add a response to the map
-//            if (taskRepository.findByAssignedUsersAndTaskId(Set.of(userDTO), task.getTaskId()).isPresent()) {
-//                statusResponseMap.put(userDTO.getUsername(), "Fail: Task already assigned to user " + userDTO.getUsername());
-//                continue;
-//            }
-//
-//            // Assign the user to the task, build a task_user object for managing relationship and add a response to the map
-//            task.getAssignedUserIDs().add(userDTO);
-//
-//            TaskUser taskUser = TaskUser.builder()
-//                    .task(task)
-//                    .userId(userDTO.getUserId())
-//                    .build();
-//            taskUserRepository.save(taskUser);
-//
-//            statusResponseMap.put(userDTO.getUsername(), "Success: Task assigned to user " + userDTO.getUsername());
-//
-//            // Set the assigned users for the task and save the task
-//            task.setAssignedUserIDs(task.getAssignedUserIDs());
-//            taskRepository.save(task);
-//
-//        }
-//    }
-
-
     /**
      * Validates whether the task belongs to the project and whether the user is a member and leader/admin of the project.
      *
@@ -132,7 +85,7 @@ public class TaskUtils {
 
 
     /**
-     * Builds a TaskResponse object with information about the newly created task and updating a task.
+     * Builds a TaskResponse object.
      *
      * @param task the assigned task
      * @return a TaskResponse object with information about the newly created task and updated task.
@@ -147,6 +100,7 @@ public class TaskUtils {
         });
 
         return TaskResponse.builder()
+                .taskId(task.getTaskId())
                 .taskName(task.getTaskName())
                 .projectName(project.getProjectName())
                 .taskStatus(task.getTaskStatus())

@@ -7,8 +7,7 @@ import com.dev.vault.projectservice.model.entity.ProjectMembers;
 import com.dev.vault.projectservice.model.entity.UserProjectRole;
 import com.dev.vault.projectservice.repository.ProjectMembersRepository;
 import com.dev.vault.projectservice.repository.UserProjectRoleRepository;
-import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
-import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
+import com.dev.vault.shared.lib.exceptions.DevVaultException;
 import com.dev.vault.shared.lib.model.dto.RolesDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import com.dev.vault.shared.lib.model.enums.Role;
@@ -44,12 +43,11 @@ public class ProjectUtilsImpl implements ProjectUtils {
         // Find the user's role
         RolesDTO leaderOrAdminRole = userDTO.getRoles().stream()
                 .filter(roles ->
-                        roles.getRole().equals(Role.PROJECT_LEADER) ||
-                                roles.getRole().equals(Role.PROJECT_ADMIN)
+                        roles.getRole().equals(Role.PROJECT_LEADER) || roles.getRole().equals(Role.PROJECT_ADMIN)
                 ).findFirst()
-                .orElseThrow(() -> {
-                    log.error("😖 Oops... You are not a PROJECT `LEADER or ADMIN` 😖");
-                    return new NotLeaderOfProjectException("😖 You are not a Leader or Admin of this project 😖", FORBIDDEN, FORBIDDEN.value());
+                .orElseGet(() -> {
+                    log.error("😖 Oops... You ({}) are NOT a project `LEADER or ADMIN` 😖", userDTO.getUserId());
+                    return new RolesDTO(4L, Role.NOT_ALLOWED);
                 });
 
         // Find the user's role FOR THE SPECIFIED project

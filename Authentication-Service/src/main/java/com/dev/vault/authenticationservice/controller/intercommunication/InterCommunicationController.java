@@ -71,7 +71,7 @@ public class InterCommunicationController {
      */
     @GetMapping("/project-leader-role-id")
     public Long getProjectLeaderRoleId() {
-        return userInterCommunicationService.getProjectLeaderRole().getRoleId();
+        return userInterCommunicationService.get_ProjectLeaderRole().getRoleId();
     }
 
 

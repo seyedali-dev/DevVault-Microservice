@@ -13,6 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class TaskResponse {
 
+    private long taskId;
     private String taskName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dueDate;
