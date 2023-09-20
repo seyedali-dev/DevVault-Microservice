@@ -1,8 +1,8 @@
-package com.dev.vault.projectservice.controller;
+package com.dev.vault.ProjectService.controller;
 
-import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
-import com.dev.vault.projectservice.model.request.ProjectRequest;
-import com.dev.vault.projectservice.service.interfaces.ProjectManagementService;
+import com.dev.vault.ProjectService.model.dto.ProjectMembersDto;
+import com.dev.vault.ProjectService.model.request.ProjectRequest;
+import com.dev.vault.ProjectService.service.interfaces.ProjectManagementService;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

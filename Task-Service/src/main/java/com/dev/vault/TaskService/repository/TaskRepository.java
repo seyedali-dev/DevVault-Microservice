@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-//    List<Task> findByAssignedUsersAndTaskId(List<TaskUser> assignedUsers, Long taskId);
-
-    boolean existsByAssignedUsersTaskUserIdAndTaskId(Long taskUserId, Long taskId);
 
     Optional<Task> findByAssignedUsers_UserIdAndTaskId(long userId, Long taskId);
 

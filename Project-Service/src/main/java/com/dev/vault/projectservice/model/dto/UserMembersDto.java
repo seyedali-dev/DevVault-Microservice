@@ -1,6 +1,6 @@
-package com.dev.vault.projectservice.model.dto;
+package com.dev.vault.ProjectService.model.dto;
 
-import com.dev.vault.projectservice.model.enums.JoinStatus;
+import com.dev.vault.ProjectService.model.enums.JoinStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

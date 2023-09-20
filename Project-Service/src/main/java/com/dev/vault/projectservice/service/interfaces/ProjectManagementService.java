@@ -1,7 +1,7 @@
-package com.dev.vault.projectservice.service.interfaces;
+package com.dev.vault.ProjectService.service.interfaces;
 
-import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
-import com.dev.vault.projectservice.model.request.ProjectRequest;
+import com.dev.vault.ProjectService.model.dto.ProjectMembersDto;
+import com.dev.vault.ProjectService.model.request.ProjectRequest;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 

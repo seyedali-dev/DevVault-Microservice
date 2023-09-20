@@ -12,6 +12,7 @@ import com.dev.vault.shared.lib.model.dto.RolesDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @Service
 @RequiredArgsConstructor
 public class UserInterCommunicationService {
+    private final ModelMapper modelMapper;
 
     @Value("${token.prefix}")
     private String TOKEN_PREFIX;
@@ -127,6 +129,16 @@ public class UserInterCommunicationService {
         User user = getUserByEmail(email);
 
         return getUserDTOById(user.getUserId());
+    }
+
+
+    public UserDTO saveUserReturnAsDTO(UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(
+                savedUser,
+                UserDTO.class
+        );
     }
 
 }

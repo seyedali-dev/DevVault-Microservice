@@ -108,32 +108,5 @@ public class TaskUtils {
                 .assignedUsers(assignededUsersMap)
                 .build();
     }
-//
-//
-//    /**
-//     * Retrieves a set of users associated with a task and a project, and updates the statusResponseMap with the status of the assignment for each user.
-//     *
-//     * @param task              The task to assign.
-//     * @param projectId         The project to which the task belongs.
-//     * @param statusResponseMap The map to which the status of the assignment for each user will be added.
-//     * @return A set of users associated with the task and the project.
-//     */
-//    public Set<UserDTO> getUsers(
-//            Task task,
-//            long projectId,
-//            Map<String, String> statusResponseMap
-//    ) {
-//        return projectMembersRepository.findByProject(projectId)
-//                .stream().map(projectMembers -> {
-//                    User user = repositoryUtils.findUserById_OrElseThrow_ResourceNoFoundException(projectMembers.getUser().getUserId());
-//                    // Check if the task is already assigned to the user, skip ahead and add a response to the map if it is
-//                    if (taskRepository.findByAssignedUsersAndTaskId(user, task.getTaskId()).isPresent())
-//                        statusResponseMap.put(user.getUsername(), "Fail: Task already assigned to user " + user.getUsername());
-//                    else statusResponseMap.put(user.getUsername(), "Success");
-//                    user.getTask().add(task);
-//
-//                    return userRepository.save(user);
-//                }).collect(Collectors.toSet());
-//    }
 
 }

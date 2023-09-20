@@ -1,15 +1,12 @@
-package com.dev.vault.projectservice.service.module;
+package com.dev.vault.ProjectService.service.module;
 
-import com.dev.vault.projectservice.feign.client.AuthUserFeignClient;
-import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
-import com.dev.vault.projectservice.model.dto.UserMembersDto;
-import com.dev.vault.projectservice.model.entity.Project;
-import com.dev.vault.projectservice.model.entity.ProjectMembers;
-import com.dev.vault.projectservice.model.response.SearchResponse;
-import com.dev.vault.projectservice.repository.ProjectMembersRepository;
-import com.dev.vault.projectservice.repository.ProjectRepository;
-import com.dev.vault.projectservice.service.interfaces.SearchProjectService;
-import com.dev.vault.projectservice.util.ProjectUtilsImpl;
+import com.dev.vault.ProjectService.feign.client.AuthUserFeignClient;
+import com.dev.vault.ProjectService.model.dto.ProjectMembersDto;
+import com.dev.vault.ProjectService.model.entity.Project;
+import com.dev.vault.ProjectService.model.response.SearchResponse;
+import com.dev.vault.ProjectService.repository.ProjectRepository;
+import com.dev.vault.ProjectService.service.interfaces.SearchProjectService;
+import com.dev.vault.ProjectService.util.ProjectUtilsImpl;
 import com.dev.vault.shared.lib.exceptions.DevVaultException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
@@ -17,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;

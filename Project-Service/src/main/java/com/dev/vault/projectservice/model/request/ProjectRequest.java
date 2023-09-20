@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.model.request;
+package com.dev.vault.ProjectService.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

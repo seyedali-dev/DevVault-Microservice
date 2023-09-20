@@ -1,11 +1,11 @@
-package com.dev.vault.projectservice.util;
+package com.dev.vault.ProjectService.util;
 
-import com.dev.vault.projectservice.model.dto.UserMembersDto;
-import com.dev.vault.projectservice.model.entity.JoinProject;
-import com.dev.vault.projectservice.model.entity.Project;
-import com.dev.vault.projectservice.model.entity.ProjectMembers;
-import com.dev.vault.projectservice.repository.JoinProjectRepository;
-import com.dev.vault.projectservice.repository.ProjectMembersRepository;
+import com.dev.vault.ProjectService.model.dto.UserMembersDto;
+import com.dev.vault.ProjectService.model.entity.JoinProject;
+import com.dev.vault.ProjectService.model.entity.Project;
+import com.dev.vault.ProjectService.model.entity.ProjectMembers;
+import com.dev.vault.ProjectService.repository.JoinProjectRepository;
+import com.dev.vault.ProjectService.repository.ProjectMembersRepository;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.UserDTO;

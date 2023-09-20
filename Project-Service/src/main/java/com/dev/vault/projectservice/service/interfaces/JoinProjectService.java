@@ -1,8 +1,8 @@
-package com.dev.vault.projectservice.service.interfaces;
+package com.dev.vault.ProjectService.service.interfaces;
 
-import com.dev.vault.projectservice.model.enums.JoinStatus;
-import com.dev.vault.projectservice.model.response.JoinProjectResponse;
-import com.dev.vault.projectservice.model.response.JoinResponse;
+import com.dev.vault.ProjectService.model.enums.JoinStatus;
+import com.dev.vault.ProjectService.model.response.JoinProjectResponse;
+import com.dev.vault.ProjectService.model.response.JoinResponse;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;

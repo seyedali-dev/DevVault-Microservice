@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice;
+package com.dev.vault.ProjectService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

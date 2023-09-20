@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.model.dto;
+package com.dev.vault.ProjectService.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

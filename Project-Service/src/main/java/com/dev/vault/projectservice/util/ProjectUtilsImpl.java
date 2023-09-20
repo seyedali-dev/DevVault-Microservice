@@ -1,13 +1,12 @@
-package com.dev.vault.projectservice.util;
+package com.dev.vault.ProjectService.util;
 
-import com.dev.vault.projectservice.feign.client.AuthUserFeignClient;
-import com.dev.vault.projectservice.model.dto.UserMembersDto;
-import com.dev.vault.projectservice.model.entity.Project;
-import com.dev.vault.projectservice.model.entity.ProjectMembers;
-import com.dev.vault.projectservice.model.entity.UserProjectRole;
-import com.dev.vault.projectservice.repository.ProjectMembersRepository;
-import com.dev.vault.projectservice.repository.UserProjectRoleRepository;
-import com.dev.vault.shared.lib.exceptions.DevVaultException;
+import com.dev.vault.ProjectService.feign.client.AuthUserFeignClient;
+import com.dev.vault.ProjectService.model.dto.UserMembersDto;
+import com.dev.vault.ProjectService.model.entity.Project;
+import com.dev.vault.ProjectService.model.entity.ProjectMembers;
+import com.dev.vault.ProjectService.model.entity.UserProjectRole;
+import com.dev.vault.ProjectService.repository.ProjectMembersRepository;
+import com.dev.vault.ProjectService.repository.UserProjectRoleRepository;
 import com.dev.vault.shared.lib.model.dto.RolesDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import com.dev.vault.shared.lib.model.enums.Role;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 /**
  * Primary implementation of ProjectUtils for regular project membership checks.

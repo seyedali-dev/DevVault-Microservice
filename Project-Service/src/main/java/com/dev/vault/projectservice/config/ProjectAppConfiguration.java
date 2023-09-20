@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.config;
+package com.dev.vault.ProjectService.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

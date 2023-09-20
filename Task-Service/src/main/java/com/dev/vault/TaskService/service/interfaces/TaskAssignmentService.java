@@ -31,14 +31,17 @@ public interface TaskAssignmentService {
     /**
      * Assigns a task to all users in a project.
      *
-     * @param taskId    The ID of the task to assign.
-     * @param projectId The ID of the project to which the task belongs.
+     * @param assignTaskRequest a {@link AssignTaskRequest class} containing the request data which is;
+     *                          <ul>
+     *                            <li> taskId -> the ID of the task to assign</li>
+     *                            <li> projectId -> the Id of the project to which the task belongs </li>
+     *                          </ul>
      * @return A {@link TaskResponse} containing information about the assigned task and its assigned users.
      * @throws ResourceNotFoundException   If the task or project is not found.
      * @throws NotLeaderOfProjectException If the current user is not a leader or admin of the project.
      * @throws NotMemberOfProjectException If the user is not a member of the project.
      */
-    TaskResponse assignTaskToAllUsersInProject(Long taskId, Long projectId)
+    TaskResponse assignTaskToAllUsersInProject(AssignTaskRequest assignTaskRequest)
             throws ResourceNotFoundException, NotLeaderOfProjectException, NotMemberOfProjectException;
 
 

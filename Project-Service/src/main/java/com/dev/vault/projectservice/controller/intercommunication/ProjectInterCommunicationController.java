@@ -1,12 +1,16 @@
-package com.dev.vault.projectservice.controller.intercommunication;
+package com.dev.vault.ProjectService.controller.intercommunication;
 
-import com.dev.vault.projectservice.service.intercommunication.ProjectInterCommunicationService;
+import com.dev.vault.ProjectService.service.intercommunication.ProjectInterCommunicationService;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.ProjectDTO;
+import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A controller class for intercommunicating between services.
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/project/inter-communication")
-public class InterCommunicationController {
+public class ProjectInterCommunicationController {
 
     private final ProjectInterCommunicationService interCommunicationService;
 
@@ -37,6 +41,11 @@ public class InterCommunicationController {
     public ProjectDTO getProjectAsDTO(@PathVariable long projectId)
             throws ResourceNotFoundException {
         return interCommunicationService.getProjectDTO(projectId);
+    }
+
+    @GetMapping("/get-user-association-with-task-and-project")
+    public List<UserDTO> getUsersAssociatedWithTaskAndProject(long taskId, long projectId, Map<String, String> statusResponseMap) {
+        return interCommunicationService.getUsersAssociatedWithTaskAndProject(taskId, projectId, statusResponseMap);
     }
 
 }

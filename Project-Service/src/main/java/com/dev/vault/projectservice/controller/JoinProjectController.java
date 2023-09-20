@@ -1,9 +1,9 @@
-package com.dev.vault.projectservice.controller;
+package com.dev.vault.ProjectService.controller;
 
-import com.dev.vault.projectservice.model.enums.JoinStatus;
-import com.dev.vault.projectservice.model.response.JoinProjectResponse;
-import com.dev.vault.projectservice.model.response.JoinResponse;
-import com.dev.vault.projectservice.service.interfaces.JoinProjectService;
+import com.dev.vault.ProjectService.model.enums.JoinStatus;
+import com.dev.vault.ProjectService.model.response.JoinProjectResponse;
+import com.dev.vault.ProjectService.model.response.JoinResponse;
+import com.dev.vault.ProjectService.service.interfaces.JoinProjectService;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.dev.vault.projectservice.model.enums.JoinStatus.*;
+import static com.dev.vault.ProjectService.model.enums.JoinStatus.*;
 
 /**
  * REST controller for managing join project requests.

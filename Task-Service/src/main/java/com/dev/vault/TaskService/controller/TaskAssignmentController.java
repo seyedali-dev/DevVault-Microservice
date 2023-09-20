@@ -43,22 +43,28 @@ public class TaskAssignmentController {
             NotMemberOfProjectException {
         return ResponseEntity.ok(taskService.assignTaskToUsers(assignTaskRequest));
     }
-//
-//    /**
-//     * Assigns a task to all users in a project.
-//     *
-//     * @param taskId    the ID of the task to assign
-//     * @param projectId the ID of the project that the task belongs to
-//     * @return a ResponseEntity containing a TaskResponse object and an HTTP status code
-//     */
-//    @PostMapping("/assignTask/all")
-//    public ResponseEntity<?> assignTaskToAllUserInProject(
-//            @RequestParam("taskId") Long taskId,
-//            @RequestParam("projectId") Long projectId
-//    ) {
-//        return ResponseEntity.ok(taskService.assignTaskToAllUsersInProject(taskId, projectId));
-//    }
-//
+
+
+    /**
+     * Assigns a task to all users in a project.
+     *
+     * @param assignTaskRequest a {@link AssignTaskRequest class} containing the request data which is;
+     *                          <ul>
+     *                            <li> taskId -> the ID of the task to assign</li>
+     *                            <li> projectId -> the Id of the project to which the task belongs </li>
+     *                          </ul>
+     * @return a ResponseEntity containing a TaskResponse object and an HTTP status code
+     * @throws ResourceNotFoundException   If the task or project is not found.
+     * @throws NotLeaderOfProjectException If the current user is not a leader or admin of the project.
+     * @throws NotMemberOfProjectException If the user is not a member of the project.
+     */
+    @PostMapping("/assignTask/all")
+    public ResponseEntity<?> assignTaskToAllUserInProject(
+            @RequestBody AssignTaskRequest assignTaskRequest
+    ) throws ResourceNotFoundException, NotLeaderOfProjectException, NotMemberOfProjectException {
+        return ResponseEntity.ok(taskService.assignTaskToAllUsersInProject(assignTaskRequest));
+    } // TODO::: --------------> TEST THIS METHOD OUT!!!
+
 //    /**
 //     * Unassigns a task from a specific user.
 //     *

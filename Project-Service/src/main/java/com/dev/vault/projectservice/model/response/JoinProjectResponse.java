@@ -1,6 +1,6 @@
-package com.dev.vault.projectservice.model.response;
+package com.dev.vault.ProjectService.model.response;
 
-import com.dev.vault.projectservice.model.enums.JoinStatus;
+import com.dev.vault.ProjectService.model.enums.JoinStatus;
 import lombok.*;
 
 @Data

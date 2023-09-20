@@ -1,6 +1,6 @@
-package com.dev.vault.projectservice.model.entity;
+package com.dev.vault.ProjectService.model.entity;
 
-import com.dev.vault.projectservice.model.enums.JoinStatus;
+import com.dev.vault.ProjectService.model.enums.JoinStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

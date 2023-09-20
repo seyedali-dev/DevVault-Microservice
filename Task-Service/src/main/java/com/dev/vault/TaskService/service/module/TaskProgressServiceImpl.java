@@ -39,7 +39,7 @@ public class TaskProgressServiceImpl implements TaskProgressService {
     public void markTaskAsCompleted(Long taskId, Long projectId, TaskStatus taskStatus) {
         // 1. Find the `Task`, `ProjectDTO` and the current user which is a `UserDTO` (UserDTO & ProjectDTO are from Shared-Lib service)
         Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
-        long projectDTO_Id = repositoryUtils.findProjectDTOById_OrElseThrow_ResourceNotFoundException(projectId).getProjectId();
+        long projectDTO_Id = repositoryUtils.find_ProjectDTOById_OrElseThrow_ResourceNotFoundException(projectId).getProjectId();
 
         String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
         long currentUser_Id = authFeignClient.getCurrentUsers_DTO(requestHeader).getUserId();

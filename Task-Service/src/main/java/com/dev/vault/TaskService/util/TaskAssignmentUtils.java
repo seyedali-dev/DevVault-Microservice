@@ -102,8 +102,11 @@ public class TaskAssignmentUtils {
      * @param assignedUsersMap the map of responses for each assigned user
      * @return a TaskResponse object with information about the assigned task and its assigned users
      */
-    public TaskResponse buildTaskResponse_AssignUsers(Task task, ProjectDTO
-            projectDTO, Map<String, String> assignedUsersMap) {
+    public TaskResponse buildTaskResponse_AssignUsers(
+            Task task,
+            ProjectDTO projectDTO,
+            Map<String, String> assignedUsersMap
+    ) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTaskId(task.getTaskId());
         taskResponse.setTaskName(task.getTaskName());
@@ -112,6 +115,23 @@ public class TaskAssignmentUtils {
         taskResponse.setProjectName(projectDTO.getProjectName());
         taskResponse.setAssignedUsers(assignedUsersMap);
         return taskResponse;
+    }
+
+
+    /**
+     * Retrieves a set of users associated with a task and a project, and updates the statusResponseMap with the status of the assignment for each user.
+     *
+     * @param task              The task to assign.
+     * @param projectId         The project to which the task belongs.
+     * @param statusResponseMap The map to which the status of the assignment for each user will be added.
+     * @return A set of users associated with the task and the project.
+     */
+    public List<UserDTO> getUsers(
+            long taskId,
+            long projectId,
+            Map<String, String> statusResponseMap
+    ) {
+        return projectFeignClient.getUsersAssociatedWithTaskAndProject(taskId, projectId);
     }
 
 }

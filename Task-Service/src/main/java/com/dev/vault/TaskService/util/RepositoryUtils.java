@@ -34,7 +34,7 @@ public class RepositoryUtils {
     }
 
 
-    public ProjectDTO findProjectDTOById_OrElseThrow_ResourceNotFoundException(Long projectId) {
+    public ProjectDTO find_ProjectDTOById_OrElseThrow_ResourceNotFoundException(Long projectId) {
         return projectUtilFeignClient.getProjectAsDTO(projectId);
     }
 
