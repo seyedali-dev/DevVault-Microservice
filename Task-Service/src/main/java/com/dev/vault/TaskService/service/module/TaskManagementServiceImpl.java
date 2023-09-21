@@ -163,7 +163,7 @@ public class TaskManagementServiceImpl implements TaskManagementService {
 
         if (assignedTo_UserId != null) {
             taskList.add(
-                    taskUserRepository.findByUserId(assignedTo_UserId)
+                    repositoryUtils.find_TaskUserByUserId_OrElseThrow_ResourceNotFoundException(assignedTo_UserId)
                             .getTask()
             );
         }

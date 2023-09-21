@@ -8,13 +8,13 @@ import com.dev.vault.TaskService.model.request.AssignTaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.repository.TaskUserRepository;
 import com.dev.vault.TaskService.service.interfaces.TaskAssignmentService;
+import com.dev.vault.TaskService.util.ProjectTaskValidationUtils;
 import com.dev.vault.TaskService.util.RepositoryUtils;
 import com.dev.vault.TaskService.util.TaskAssignmentUtils;
 import com.dev.vault.TaskService.util.TaskUtils;
-import com.dev.vault.shared.lib.exceptions.DevVaultException;
-import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.model.dto.ProjectDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
+import com.dev.vault.shared.lib.model.response.MapResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 /**
  * Service implementation for task assignments.
@@ -45,6 +44,7 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
     private final RepositoryUtils repositoryUtils;
     private final TaskAssignmentUtils taskAssignmentUtils;
     private final TaskUtils taskUtils;
+    private final ProjectTaskValidationUtils taskValidationUtils;
 
     /**
      * {@inheritDoc}
@@ -61,10 +61,10 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         ProjectDTO projectDTO = repositoryUtils.find_ProjectDTOById_OrElseThrow_ResourceNotFoundException(projectId);
 
         // 2. Check if the task belongs to the project or throw a DevVaultException
-        handle_TaskBelongingToProject(task, projectId);
+        taskValidationUtils.handle_TaskBelongingToProject(task, projectId);
 
         // 3. Check if the current user is leader/admin of the project
-        handle_UserLeadership(projectDTO);
+        taskValidationUtils.handle_UserLeadership(projectDTO);
 
         Map<String, String> statusResponseMap = new HashMap<>();
 
@@ -74,23 +74,12 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
 
     }
 
-    private void handle_UserLeadership(ProjectDTO projectDTO) {
-        String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
-        long currentUsersDTO_Id = authUserFeignClient.getCurrentUsers_Id(requestHeader);
-        if (!projectUtilFeignClient.isLeaderOrAdminOfProject(projectDTO.getProjectId(), currentUsersDTO_Id))
-            throw new NotLeaderOfProjectException("👮🏻You are not a leader or admin of THIS project👮🏻", FORBIDDEN, FORBIDDEN.value());
-    }
-
-    private void handle_TaskBelongingToProject(Task task, long projectId) {
-        if (!task.getProjectId().equals(projectId))
-            throw new DevVaultException("Task with ID '" + task.getTaskId() + "' does not belong to project with ID '" + projectId + "'", BAD_REQUEST, BAD_REQUEST.value());
-    }
-
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public TaskResponse assignTaskToAllUsersInProject(AssignTaskRequest assignTaskRequest) {
         // 1. Get the task & project from the request and the current user.
         Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(assignTaskRequest.getTaskId());
@@ -141,19 +130,55 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         });
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void unAssignTaskFromUser(Long taskId, Long projectId, Long userId) {
-        //TODO
+    @Transactional
+    public MapResponse unAssignTaskFromUsers(AssignTaskRequest assignTaskRequest) {
+        long projectId = assignTaskRequest.getProjectId();
+        long taskId = assignTaskRequest.getTaskId();
+        List<Long> userIdList = assignTaskRequest.getUserIdList();
+
+        // 1. Find the task and project.
+        ProjectDTO projectDTO = projectUtilFeignClient.getProjectAsDTO(projectId);
+        Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
+
+        // 2. Check if the user attempting to unassign is a leader/admin of project.
+        taskValidationUtils.handle_UserLeadership(projectDTO);
+
+        // 3. Check whether task belongs to the project.
+        taskValidationUtils.handle_TaskBelongingToProject(task, projectDTO.getProjectId());
+
+        // 4. Unassign the task from the user(s) and return a map as response.
+        return unAssignTaskFromUser_s(userIdList, new MapResponse(), task.getTaskName());
+    }
+
+    private MapResponse unAssignTaskFromUser_s(List<Long> userIdList, MapResponse mapResponse, String taskName) {
+        userIdList.forEach(userId -> {
+            // a) find the user
+            UserDTO userDTO = authUserFeignClient.getUserDTOById(userId);
+            String userDTO_Username = userDTO.getUsername();
+
+            // b) find the task associated with the user and unassign (delete) it if it is present
+            Optional<TaskUser> assignedTaskToUser = taskUserRepository.findByUserId(userDTO.getUserId());
+            if (assignedTaskToUser.isPresent()) {
+                taskUserRepository.delete(assignedTaskToUser.get());
+
+                String unassignSuccessMessage = "Task '" + taskName + "' UnAssigned from User '" + userDTO_Username + "' ✅";
+                mapResponse.getMapResponse().put(userDTO_Username, unassignSuccessMessage);
+            } else {
+                String memberNotFoundErrorMessage = "😊 huh... It seems user '" + userDTO_Username + "' either was already unassigned, or is not a member of this project 😊";
+                mapResponse.getMapResponse().put(userDTO_Username, memberNotFoundErrorMessage);
+            }
+        });
+        return mapResponse;
     }
 
 
     @Override
-    public void unAssignTaskFromUsers(Long taskId, Long projectId, List<Long> userIdList) {
-        //TODO
-    }
-
-
-    @Override
+    @Transactional
     public void unassignTaskFromAllUsersInProject(Long taskId, Long projectId) {
         //TODO
     }

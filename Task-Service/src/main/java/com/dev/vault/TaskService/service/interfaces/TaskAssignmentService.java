@@ -3,8 +3,7 @@ package com.dev.vault.TaskService.service.interfaces;
 import com.dev.vault.TaskService.model.request.AssignTaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.shared.lib.exceptions.*;
-
-import java.util.List;
+import com.dev.vault.shared.lib.model.response.MapResponse;
 
 public interface TaskAssignmentService {
 
@@ -45,10 +44,21 @@ public interface TaskAssignmentService {
             throws ResourceNotFoundException, NotLeaderOfProjectException, NotMemberOfProjectException;
 
 
-    void unAssignTaskFromUser(Long taskId, Long projectId, Long userId);
-
-
-    void unAssignTaskFromUsers(Long taskId, Long projectId, List<Long> userIdList);
+    /**
+     * Unassigns a task from a user or a list of users within a specified project.
+     *
+     * @param assignTaskRequest a {@link AssignTaskRequest class} containing the request data which is;
+     *                          <ul>
+     *                            <li> taskId -> the ID of the task to assign</li>
+     *                            <li> projectId -> the Id of the project to which the task belongs </li>
+     *                            <li> userIdList -> the list of user IDs to assign the task to</li>
+     *                          </ul>     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @throws ResourceNotFoundException   If the specified task, project, or user is not found
+     * @throws NotLeaderOfProjectException If the user attempting to unassign the task is not
+     *                                     a leader of the project
+     */
+    MapResponse unAssignTaskFromUsers(AssignTaskRequest assignTaskRequest)
+            throws ResourceNotFoundException, NotLeaderOfProjectException;
 
 
     void unassignTaskFromAllUsersInProject(Long taskId, Long projectId);

@@ -2,9 +2,11 @@ package com.dev.vault.TaskService.util;
 
 import com.dev.vault.TaskService.fegin.client.ProjectUtilFeignClient;
 import com.dev.vault.TaskService.model.entity.Task;
+import com.dev.vault.TaskService.model.entity.TaskUser;
 import com.dev.vault.TaskService.model.enums.TaskPriority;
 import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.dev.vault.TaskService.repository.TaskRepository;
+import com.dev.vault.TaskService.repository.TaskUserRepository;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.ProjectDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class RepositoryUtils {
 
     private final TaskRepository taskRepository;
+    private final TaskUserRepository taskUserRepository;
     private final ProjectUtilFeignClient projectUtilFeignClient;
 
     public Task find_TaskById_OrElseThrow_ResourceNotFoundException(Long taskId) {
@@ -71,6 +74,19 @@ public class RepositoryUtils {
                     log.error("😖 huh... it seems the Task with ProjectID {{}} wasn't found in the db 😖", projectId);
                     return new ResourceNotFoundException(
                             "😖 huh... it seems the Task with ProjectID {" + projectId + "} wasn't found in the db 😖",
+                            NOT_FOUND,
+                            NOT_FOUND.value()
+                    );
+                });
+    }
+
+
+    public TaskUser find_TaskUserByUserId_OrElseThrow_ResourceNotFoundException(long userId) {
+        return taskUserRepository.findByUserId(userId)
+                .orElseThrow(() -> {
+                    log.error("😖 huh... it seems the TaskUser with UserID {{}} wasn't found in the db 😖", userId);
+                    return new ResourceNotFoundException(
+                            "😖 huh... it seems the TaskUser with UserID '" + userId + "' wasn't found in the db 😖",
                             NOT_FOUND,
                             NOT_FOUND.value()
                     );
