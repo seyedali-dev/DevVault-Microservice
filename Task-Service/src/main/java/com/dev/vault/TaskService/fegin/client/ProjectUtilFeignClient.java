@@ -28,6 +28,6 @@ public interface ProjectUtilFeignClient {
     ProjectDTO getProjectAsDTO(@PathVariable long projectId) throws ResourceNotFoundException;
 
 
-    @GetMapping("/get-user-association-with-task-and-project/{taskId}/{projectId}")
-    List<UserDTO> getUsersAssociatedWithTaskAndProject(@PathVariable long taskId, @PathVariable long projectId);
+    @GetMapping("/get-user-association-with-task-and-project/{projectId}")
+    List<UserDTO> getUsersAssociatedWithTaskAndProject(@PathVariable long projectId);
 }

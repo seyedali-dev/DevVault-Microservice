@@ -1,6 +1,5 @@
 package com.dev.vault.authenticationservice.controller.intercommunication;
 
-import com.dev.vault.authenticationservice.model.entity.User;
 import com.dev.vault.authenticationservice.service.intercommunication.UserInterCommunicationService;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
@@ -86,12 +85,6 @@ public class InterCommunicationController {
     @GetMapping("/get-user/{userId}")
     public UserDTO getUserDTOById(@PathVariable Long userId) {
         return userInterCommunicationService.getUserDTOById(userId);
-    }
-
-
-    @PostMapping("/save-user-as-dto")
-    public UserDTO saveUserReturnAsDTO(@RequestBody UserDTO userDTO) {
-        return userInterCommunicationService.saveUserReturnAsDTO(userDTO);
     }
 
 }

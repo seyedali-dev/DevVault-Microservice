@@ -27,6 +27,5 @@ public class UserDTO {
     private String major;
 
     private Set<RolesDTO> roles = new HashSet<>();
-    private List<Long> assignedTaskIDs = new ArrayList<>();
 
 }

@@ -27,7 +27,6 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @Service
 @RequiredArgsConstructor
 public class UserInterCommunicationService {
-    private final ModelMapper modelMapper;
 
     @Value("${token.prefix}")
     private String TOKEN_PREFIX;
@@ -129,16 +128,6 @@ public class UserInterCommunicationService {
         User user = getUserByEmail(email);
 
         return getUserDTOById(user.getUserId());
-    }
-
-
-    public UserDTO saveUserReturnAsDTO(UserDTO userDTO) {
-        User user = modelMapper.map(userDTO, User.class);
-        User savedUser = userRepository.save(user);
-        return modelMapper.map(
-                savedUser,
-                UserDTO.class
-        );
     }
 
 }

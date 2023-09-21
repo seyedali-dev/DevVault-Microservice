@@ -63,7 +63,7 @@ public class TaskAssignmentController {
             @RequestBody AssignTaskRequest assignTaskRequest
     ) throws ResourceNotFoundException, NotLeaderOfProjectException, NotMemberOfProjectException {
         return ResponseEntity.ok(taskService.assignTaskToAllUsersInProject(assignTaskRequest));
-    } // TODO::: --------------> TEST THIS METHOD OUT!!!
+    }
 
 //    /**
 //     * Unassigns a task from a specific user.

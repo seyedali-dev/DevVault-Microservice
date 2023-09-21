@@ -119,19 +119,15 @@ public class TaskAssignmentUtils {
 
 
     /**
-     * Retrieves a set of users associated with a task and a project, and updates the statusResponseMap with the status of the assignment for each user.
+     * Retrieves a set of users associated with a task and a project.
      *
-     * @param task              The task to assign.
      * @param projectId         The project to which the task belongs.
-     * @param statusResponseMap The map to which the status of the assignment for each user will be added.
      * @return A set of users associated with the task and the project.
      */
     public List<UserDTO> getUsers(
-            long taskId,
-            long projectId,
-            Map<String, String> statusResponseMap
+            long projectId
     ) {
-        return projectFeignClient.getUsersAssociatedWithTaskAndProject(taskId, projectId);
+        return projectFeignClient.getUsersAssociatedWithTaskAndProject(projectId);
     }
 
 }

@@ -6,7 +6,7 @@ import com.dev.vault.TaskService.model.entity.Task;
 import com.dev.vault.TaskService.model.entity.TaskUser;
 import com.dev.vault.TaskService.model.request.AssignTaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
-import com.dev.vault.TaskService.repository.TaskRepository;
+import com.dev.vault.TaskService.repository.TaskUserRepository;
 import com.dev.vault.TaskService.service.interfaces.TaskAssignmentService;
 import com.dev.vault.TaskService.util.RepositoryUtils;
 import com.dev.vault.TaskService.util.TaskAssignmentUtils;
@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -37,7 +38,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RequiredArgsConstructor
 public class TaskAssignmentServiceImpl implements TaskAssignmentService {
 
-    private final TaskRepository taskRepository;
+    private final TaskUserRepository taskUserRepository;
     private final AuthUserFeignClient authUserFeignClient;
     private final ProjectUtilFeignClient projectUtilFeignClient;
     private final HttpServletRequest httpServletRequest;
@@ -60,7 +61,7 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         ProjectDTO projectDTO = repositoryUtils.find_ProjectDTOById_OrElseThrow_ResourceNotFoundException(projectId);
 
         // 2. Check if the task belongs to the project or throw a DevVaultException
-        handle_TaskBelongingToProject(taskId, projectId, task);
+        handle_TaskBelongingToProject(task, projectId);
 
         // 3. Check if the current user is leader/admin of the project
         handle_UserLeadership(projectDTO);
@@ -77,20 +78,12 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
         long currentUsersDTO_Id = authUserFeignClient.getCurrentUsers_Id(requestHeader);
         if (!projectUtilFeignClient.isLeaderOrAdminOfProject(projectDTO.getProjectId(), currentUsersDTO_Id))
-            throw new NotLeaderOfProjectException(
-                    "👮🏻You are not a leader or admin of THIS project👮🏻",
-                    FORBIDDEN,
-                    FORBIDDEN.value()
-            );
+            throw new NotLeaderOfProjectException("👮🏻You are not a leader or admin of THIS project👮🏻", FORBIDDEN, FORBIDDEN.value());
     }
 
-    private void handle_TaskBelongingToProject(long taskId, long projectId, Task task) {
+    private void handle_TaskBelongingToProject(Task task, long projectId) {
         if (!task.getProjectId().equals(projectId))
-            throw new DevVaultException(
-                    "Task with ID '" + taskId + "' does not belong to project with ID '" + projectId + "'",
-                    BAD_REQUEST,
-                    BAD_REQUEST.value()
-            );
+            throw new DevVaultException("Task with ID '" + task.getTaskId() + "' does not belong to project with ID '" + projectId + "'", BAD_REQUEST, BAD_REQUEST.value());
     }
 
 
@@ -109,23 +102,43 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         // 2. Validate whether the task belongs to the project and whether the user is a member and leader/admin of the project.
         taskUtils.validateTaskAndProject(task, projectDTO.getProjectId(), currentUserDTO_Id);
 
-        // 3. Create a responseMap to hold the responses for each user
+        // 3. Create a responseMap to hold the responses for each user.
         Map<String, String> responseMap = new HashMap<>();
 
-        // 4. Retrieves a set of users associated with a task and a project, and updates the responseMap with the status of the assignment for each user.
-        List<UserDTO> users = taskAssignmentUtils.getUsers(task.getTaskId(), projectDTO.getProjectId(), responseMap);
+        // 4. Retrieves a set of users associated with a task and a project.
+        List<UserDTO> members = taskAssignmentUtils.getUsers(projectDTO.getProjectId());
 
-        // 5. Assign the task to all users in the set
-        List<TaskUser> taskUsers = users.stream().map(userDTO -> TaskUser.builder()
-                .userId(userDTO.getUserId())
-                .task(task)
-                .build()
-        ).toList();
-        task.setAssignedUsers(taskUsers);
-        taskRepository.save(task);
+        // 5. Assign the task to all users in the list
+        assignTaskToAllUsersInTheList(task, responseMap, members);
 
         // 6. Build and return a TaskResponse with information about the assigned task and its assigned users
         return taskAssignmentUtils.buildTaskResponse_AssignUsers(task, projectDTO, responseMap);
+    }
+
+    private void assignTaskToAllUsersInTheList(Task task, Map<String, String> responseMap, List<UserDTO> members) {
+        AtomicReference<String> alreadyAssignedMessage = new AtomicReference<>();
+        AtomicReference<String> successMessage = new AtomicReference<>();
+        members.forEach(memberDTO -> {
+
+            alreadyAssignedMessage.set("❌😖 Fail: Task is already assigned to user '" + memberDTO.getUsername() + "' 😖❌");
+            successMessage.set("✅ Success: Task assigned to user '" + memberDTO.getUsername() + "' ✅");
+
+            // check if the task is already assigned to the user; skip ahead, and add a response to the map
+            boolean isTaskAlreadyAssigned = taskUserRepository.existsByUserIdAndTask_TaskId(memberDTO.getUserId(), task.getTaskId());
+            if (isTaskAlreadyAssigned)
+                responseMap.put(memberDTO.getUsername(), String.valueOf(alreadyAssignedMessage));
+
+            else {
+                responseMap.put(memberDTO.getUsername(), String.valueOf(successMessage));
+
+                TaskUser taskUser = TaskUser.builder()
+                        .task(task)
+                        .userId(memberDTO.getUserId())
+                        .build();
+                taskUserRepository.save(taskUser);
+            }
+
+        });
     }
 
     @Override
