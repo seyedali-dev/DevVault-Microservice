@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.model.entity;
+package com.dev.vault.ProjectService.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

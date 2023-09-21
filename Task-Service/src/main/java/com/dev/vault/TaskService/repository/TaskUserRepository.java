@@ -7,4 +7,7 @@ public interface TaskUserRepository extends JpaRepository<TaskUser, Long> {
 
     TaskUser findByUserId(Long userId);
 
+
+    boolean existsByUserIdAndTask_TaskId(long userId, Long taskId);
+
 }

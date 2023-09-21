@@ -1,20 +1,20 @@
-package com.dev.vault.projectservice.service.module;
+package com.dev.vault.ProjectService.service.module;
 
-import com.dev.vault.projectservice.feign.client.AuthUserFeignClient;
-import com.dev.vault.projectservice.model.entity.JoinProject;
-import com.dev.vault.projectservice.model.entity.Project;
-import com.dev.vault.projectservice.model.entity.ProjectMembers;
-import com.dev.vault.projectservice.model.enums.JoinStatus;
-import com.dev.vault.projectservice.model.response.JoinProjectResponse;
-import com.dev.vault.projectservice.model.response.JoinResponse;
-import com.dev.vault.projectservice.repository.JoinProjectRepository;
-import com.dev.vault.projectservice.repository.ProjectMembersRepository;
-import com.dev.vault.projectservice.repository.ProjectRepository;
-import com.dev.vault.projectservice.service.interfaces.JoinProjectService;
-import com.dev.vault.projectservice.util.JoinRequestProjectUtilsImpl;
-import com.dev.vault.projectservice.util.ProjectUtils;
-import com.dev.vault.projectservice.util.ProjectUtilsImpl;
-import com.dev.vault.projectservice.util.RepositoryUtils;
+import com.dev.vault.ProjectService.feign.client.AuthUserFeignClient;
+import com.dev.vault.ProjectService.model.entity.JoinProject;
+import com.dev.vault.ProjectService.model.entity.Project;
+import com.dev.vault.ProjectService.model.entity.ProjectMembers;
+import com.dev.vault.ProjectService.model.enums.JoinStatus;
+import com.dev.vault.ProjectService.model.response.JoinProjectResponse;
+import com.dev.vault.ProjectService.model.response.JoinResponse;
+import com.dev.vault.ProjectService.repository.JoinProjectRepository;
+import com.dev.vault.ProjectService.repository.ProjectMembersRepository;
+import com.dev.vault.ProjectService.repository.ProjectRepository;
+import com.dev.vault.ProjectService.service.interfaces.JoinProjectService;
+import com.dev.vault.ProjectService.util.JoinRequestProjectUtilsImpl;
+import com.dev.vault.ProjectService.util.ProjectUtils;
+import com.dev.vault.ProjectService.util.ProjectUtilsImpl;
+import com.dev.vault.ProjectService.util.RepositoryUtils;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.dev.vault.projectservice.model.enums.JoinStatus.PENDING;
+import static com.dev.vault.ProjectService.model.enums.JoinStatus.PENDING;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.*;
 

@@ -12,6 +12,7 @@ import com.dev.vault.shared.lib.model.dto.RolesDTO;
 import com.dev.vault.shared.lib.model.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class UserInterCommunicationService {
     private final JwtService jwtService;
 
     public void add_ProjectLeaderRole(Long userId) {
-        Roles projectLeaderRole = getProjectLeaderRole();
+        Roles projectLeaderRole = get_ProjectLeaderRole();
         User user = getUserById(userId);
 
         Set<Roles> roles = user.getRoles();
@@ -52,7 +53,7 @@ public class UserInterCommunicationService {
     }
 
 
-    public Roles getProjectLeaderRole() {
+    public Roles get_ProjectLeaderRole() {
         return rolesRepository.findByRole(PROJECT_LEADER)
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems we don't have roles with {{}} in our db 😖", PROJECT_LEADER);
@@ -65,7 +66,11 @@ public class UserInterCommunicationService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.error("😖 huh... it seems we don't have user with {{}} in our db 😖", userId);
-                    return new ResourceNotFoundException("User with the given userId was not found", NOT_FOUND, NOT_FOUND.value());
+                    return new ResourceNotFoundException(
+                            "😖 User with the given userId was NOT found 😖",
+                            NOT_FOUND,
+                            NOT_FOUND.value()
+                    );
                 });
     }
 

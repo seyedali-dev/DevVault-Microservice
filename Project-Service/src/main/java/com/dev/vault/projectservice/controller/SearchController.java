@@ -1,7 +1,7 @@
-package com.dev.vault.projectservice.controller;
+package com.dev.vault.ProjectService.controller;
 
-import com.dev.vault.projectservice.model.response.SearchResponse;
-import com.dev.vault.projectservice.service.interfaces.SearchProjectService;
+import com.dev.vault.ProjectService.model.response.SearchResponse;
+import com.dev.vault.ProjectService.service.interfaces.SearchProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

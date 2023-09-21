@@ -1,6 +1,6 @@
-package com.dev.vault.projectservice.model.response;
+package com.dev.vault.ProjectService.model.response;
 
-import com.dev.vault.projectservice.model.dto.ProjectMembersDto;
+import com.dev.vault.ProjectService.model.dto.ProjectMembersDto;
 import lombok.*;
 
 @Getter

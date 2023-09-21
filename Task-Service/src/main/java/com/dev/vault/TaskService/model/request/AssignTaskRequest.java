@@ -1,4 +1,4 @@
-package com.dev.vault.ProjectService.model.dto;
+package com.dev.vault.TaskService.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectMembersDto {
+public class AssignTaskRequest {
 
-    private List<UserMembersDto> projectMembers;
+    private long taskId;
+    private long projectId;
+    private List<Long> userIdList;
 
 }

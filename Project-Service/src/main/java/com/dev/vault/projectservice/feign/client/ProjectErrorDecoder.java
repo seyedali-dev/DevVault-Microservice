@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.feign.client;
+package com.dev.vault.ProjectService.feign.client;
 
 import com.dev.vault.shared.lib.exceptions.DevVaultException;
 import com.fasterxml.jackson.databind.ObjectMapper;

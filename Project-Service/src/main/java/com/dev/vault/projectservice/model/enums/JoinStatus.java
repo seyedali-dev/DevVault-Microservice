@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.model.enums;
+package com.dev.vault.ProjectService.model.enums;
 
 public enum JoinStatus {
     APPROVED,

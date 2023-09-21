@@ -1,7 +1,7 @@
-package com.dev.vault.projectservice.repository;
+package com.dev.vault.ProjectService.repository;
 
-import com.dev.vault.projectservice.model.entity.Project;
-import com.dev.vault.projectservice.model.entity.UserProjectRole;
+import com.dev.vault.ProjectService.model.entity.Project;
+import com.dev.vault.ProjectService.model.entity.UserProjectRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

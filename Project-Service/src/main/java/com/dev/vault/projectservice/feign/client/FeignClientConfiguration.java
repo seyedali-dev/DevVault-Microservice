@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.feign.client;
+package com.dev.vault.ProjectService.feign.client;
 
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,6 @@
-package com.dev.vault.projectservice.service.interfaces;
+package com.dev.vault.ProjectService.service.interfaces;
 
-import com.dev.vault.projectservice.model.response.SearchResponse;
+import com.dev.vault.ProjectService.model.response.SearchResponse;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
 
 import java.util.List;

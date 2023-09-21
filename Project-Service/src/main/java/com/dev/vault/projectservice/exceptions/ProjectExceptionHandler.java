@@ -1,4 +1,4 @@
-package com.dev.vault.projectservice.exceptions;
+package com.dev.vault.ProjectService.exceptions;
 
 import com.dev.vault.shared.lib.exceptions.*;
 import com.dev.vault.shared.lib.model.response.ApiResponse;

@@ -55,6 +55,16 @@ public class GatewayConfig {
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
                         .uri("lb://6-TASK-SERVICE")
                 )
+                .route("task-progress-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/task/progress/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://6-TASK-SERVICE")
+                )
+                .route("task-assignment-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/task/assignment/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://6-TASK-SERVICE")
+                )
                 .build();
     }
 
