@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -55,26 +53,11 @@ public class ProjectInterCommunicationService {
     }
 
 
-    public List<UserDTO> getUsersAssociatedWithTaskAndProject(long taskId, long projectId) {
-        // 1. Find the members of the project
+    public List<UserDTO> getUsersAssociatedWithTaskAndProject(long projectId) {
         return repositoryUtils.find_ProjectMembersByProjectId(projectId)
-                .stream().map(projectMembers -> {
-
-                    UserDTO userDTO = authUserFeignClient.getUserDTOById(projectMembers.getUserId());
-
-                    // 2. Check if the task is already assigned to the user; skip ahead, and add a response to the map
-                    String alreadyAssignedMessage = "❌😖 Fail: Task is already assigned to user '" + userDTO.getUsername() + "' 😖❌";
-                    String successMessage = "✅ Success: Task assigned to user '" + userDTO.getUsername() + "' ✅";
-                    Map<String, String> statusResponseMap = new HashMap<>();
-
-                    if (taskFeignClient.findTaskByAssignedUser_IsUserPresent(userDTO.getUserId(), taskId))
-                        statusResponseMap.put(userDTO.getUsername(), alreadyAssignedMessage);
-                    else statusResponseMap.put(userDTO.getUsername(), successMessage);
-
-                    userDTO.setAssignedTaskIDs(List.of(taskId));
-                    return authUserFeignClient.saveUserAndReturnSavedUserAsDTO(userDTO);
-
-                }).toList();
+                .stream()
+                .map(projectMembers -> authUserFeignClient.getUserDTOById(projectMembers.getUserId()))
+                .toList();
     }
 
 }
