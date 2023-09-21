@@ -12,7 +12,8 @@ import lombok.*;
 @Table(name = "tasks_users")
 public class TaskUser {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskUserId;
 
     /* relationships */

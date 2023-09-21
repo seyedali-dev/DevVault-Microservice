@@ -42,8 +42,8 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
     private final ProjectUtilFeignClient projectUtilFeignClient;
     private final HttpServletRequest httpServletRequest;
     private final RepositoryUtils repositoryUtils;
-    private final TaskAssignmentUtils taskAssignmentUtils;
     private final TaskUtils taskUtils;
+    private final TaskAssignmentUtils taskAssignmentUtils;
     private final ProjectTaskValidationUtils taskValidationUtils;
 
     /**
@@ -51,7 +51,7 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
      */
     @Override
     @Transactional
-    public TaskResponse assignTaskToUsers(AssignTaskRequest assignTaskRequest) {
+    public TaskResponse assignTaskToUser_s(AssignTaskRequest assignTaskRequest) {
         long taskId = assignTaskRequest.getTaskId();
         long projectId = assignTaskRequest.getProjectId();
         List<Long> userIdList = assignTaskRequest.getUserIdList();
@@ -136,26 +136,56 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
      */
     @Override
     @Transactional
-    public MapResponse unAssignTaskFromUsers(AssignTaskRequest assignTaskRequest) {
+    public MapResponse unAssignTaskFromUser_s(AssignTaskRequest assignTaskRequest) {
         long projectId = assignTaskRequest.getProjectId();
         long taskId = assignTaskRequest.getTaskId();
         List<Long> userIdList = assignTaskRequest.getUserIdList();
 
-        // 1. Find the task and project.
+        // 1. Find the task and validate user leadership and task belonging to project.
+        validateUserLeadershipAndProjectBelonging(taskId, projectId);
+        Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
+
+        // 2. Unassign the task from the user(s) and return a map as response.
+        return unAssignTaskFromUsersList(userIdList, new MapResponse(), task.getTaskName());
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public MapResponse unassignTaskFromAllUsersInProject(AssignTaskRequest assignTaskRequest) {
+        long projectId = assignTaskRequest.getProjectId();
+        long taskId = assignTaskRequest.getTaskId();
+
+        // 1. Find the task and validate user leadership and task belonging to project.
+        validateUserLeadershipAndProjectBelonging(taskId, projectId);
+        Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
+
+        // 2. Find the UserIDs of the assignedUsers to the task.
+        List<Long> assignedUser_sToTask = taskUserRepository.findByTask(task)
+                .stream()
+                .map(TaskUser::getTaskUserId)
+                .toList();
+
+        // 3. Unassign the task from the user(s) and return a map as response.
+        return unAssignTaskFromUsersList(assignedUser_sToTask, new MapResponse(), task.getTaskName());
+    }
+
+
+    private void validateUserLeadershipAndProjectBelonging(long taskId, long projectId) {
         ProjectDTO projectDTO = projectUtilFeignClient.getProjectAsDTO(projectId);
         Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
 
-        // 2. Check if the user attempting to unassign is a leader/admin of project.
+        // a) Check if the user attempting (logged-in user) to unassign is a leader/admin of project.
         taskValidationUtils.handle_UserLeadership(projectDTO);
 
-        // 3. Check whether task belongs to the project.
+        // b) Check whether task belongs to the project.
         taskValidationUtils.handle_TaskBelongingToProject(task, projectDTO.getProjectId());
-
-        // 4. Unassign the task from the user(s) and return a map as response.
-        return unAssignTaskFromUser_s(userIdList, new MapResponse(), task.getTaskName());
     }
 
-    private MapResponse unAssignTaskFromUser_s(List<Long> userIdList, MapResponse mapResponse, String taskName) {
+    private MapResponse unAssignTaskFromUsersList(List<Long> userIdList, MapResponse mapResponse, String taskName) {
         userIdList.forEach(userId -> {
             // a) find the user
             UserDTO userDTO = authUserFeignClient.getUserDTOById(userId);
@@ -174,13 +204,6 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
             }
         });
         return mapResponse;
-    }
-
-
-    @Override
-    @Transactional
-    public void unassignTaskFromAllUsersInProject(Long taskId, Long projectId) {
-        //TODO
     }
 
 }

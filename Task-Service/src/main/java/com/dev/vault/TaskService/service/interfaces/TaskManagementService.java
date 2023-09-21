@@ -64,9 +64,9 @@ public interface TaskManagementService {
     /**
      * Searches for tasks based on the given criteria.
      *
-     * @param status           the status of the tasks to search for (optional)
-     * @param priority         the priority of the tasks to search for (optional)
-     * @param projectId        the ID of the project that the tasks belong to (optional)
+     * @param status            the status of the tasks to search for (optional)
+     * @param priority          the priority of the tasks to search for (optional)
+     * @param projectId         the ID of the project that the tasks belong to (optional)
      * @param assignedTo_UserId the ID of the user that the tasks are assigned to (optional)
      * @return a list of {@link TaskResponse TaskResponses} that match the search criteria
      */

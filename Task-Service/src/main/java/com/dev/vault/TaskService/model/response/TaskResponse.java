@@ -2,7 +2,10 @@ package com.dev.vault.TaskService.model.response;
 
 import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Map;

@@ -121,7 +121,7 @@ public class TaskAssignmentUtils {
     /**
      * Retrieves a set of users associated with a task and a project.
      *
-     * @param projectId         The project to which the task belongs.
+     * @param projectId The project to which the task belongs.
      * @return A set of users associated with the task and the project.
      */
     public List<UserDTO> getUsers(

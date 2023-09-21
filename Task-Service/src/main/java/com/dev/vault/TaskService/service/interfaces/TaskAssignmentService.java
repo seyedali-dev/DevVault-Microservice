@@ -23,7 +23,7 @@ public interface TaskAssignmentService {
      * @throws ResourceAlreadyExistsException If the task is already assigned to a user
      * @throws NotMemberOfProjectException    If the user is not a member of the project
      */
-    TaskResponse assignTaskToUsers(AssignTaskRequest assignTaskRequest)
+    TaskResponse assignTaskToUser_s(AssignTaskRequest assignTaskRequest)
             throws ResourceNotFoundException, DevVaultException, NotLeaderOfProjectException, ResourceAlreadyExistsException, NotMemberOfProjectException;
 
 
@@ -53,14 +53,30 @@ public interface TaskAssignmentService {
      *                            <li> projectId -> the Id of the project to which the task belongs </li>
      *                            <li> userIdList -> the list of user IDs to assign the task to</li>
      *                          </ul>     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @return A {@link MapResponse} object containing the message of the unassigned operation
      * @throws ResourceNotFoundException   If the specified task, project, or user is not found
      * @throws NotLeaderOfProjectException If the user attempting to unassign the task is not
      *                                     a leader of the project
      */
-    MapResponse unAssignTaskFromUsers(AssignTaskRequest assignTaskRequest)
+    MapResponse unAssignTaskFromUser_s(AssignTaskRequest assignTaskRequest)
             throws ResourceNotFoundException, NotLeaderOfProjectException;
 
 
-    void unassignTaskFromAllUsersInProject(Long taskId, Long projectId);
+    /**
+     * Unassigns a task from all users within a specified project.
+     *
+     * @param assignTaskRequest a {@link AssignTaskRequest class} containing the request data which is;
+     *                          <ul>
+     *                            <li> taskId -> the ID of the task to assign</li>
+     *                            <li> projectId -> the Id of the project to which the task belongs </li>
+     *                            <li> userIdList -> the list of user IDs to assign the task to</li>
+     *                          </ul>     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @throws ResourceNotFoundException   If the specified task & project is not found
+     * @throws NotLeaderOfProjectException If the user attempting to unassign the task is not
+     *                                     a leader or admin of the project
+     */
+    MapResponse unassignTaskFromAllUsersInProject(AssignTaskRequest assignTaskRequest)
+            throws ResourceNotFoundException, NotLeaderOfProjectException;
 
 }
