@@ -4,12 +4,11 @@ import com.dev.vault.TaskService.model.request.AssignTaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.service.interfaces.TaskAssignmentService;
 import com.dev.vault.shared.lib.exceptions.*;
+import com.dev.vault.shared.lib.model.enums.Role;
+import com.dev.vault.shared.lib.model.response.MapResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/task/assignment")
@@ -35,13 +34,13 @@ public class TaskAssignmentController {
      * @throws NotMemberOfProjectException    If the user is not a member of the project
      */
     @PostMapping("/assignTaskToUsers")
-    public ResponseEntity<TaskResponse> assignTaskToUsers(
+    public ResponseEntity<TaskResponse> assignTaskToUser_s(
             @RequestBody AssignTaskRequest assignTaskRequest
     ) throws
             ResourceNotFoundException, DevVaultException,
             NotLeaderOfProjectException, ResourceAlreadyExistsException,
             NotMemberOfProjectException {
-        return ResponseEntity.ok(taskService.assignTaskToUsers(assignTaskRequest));
+        return ResponseEntity.ok(taskService.assignTaskToUser_s(assignTaskRequest));
     }
 
 
@@ -59,65 +58,54 @@ public class TaskAssignmentController {
      * @throws NotMemberOfProjectException If the user is not a member of the project.
      */
     @PostMapping("/assignTask/all")
-    public ResponseEntity<?> assignTaskToAllUserInProject(
+    public ResponseEntity<TaskResponse> assignTaskToAllUserInProject(
             @RequestBody AssignTaskRequest assignTaskRequest
     ) throws ResourceNotFoundException, NotLeaderOfProjectException, NotMemberOfProjectException {
         return ResponseEntity.ok(taskService.assignTaskToAllUsersInProject(assignTaskRequest));
     }
 
-//    /**
-//     * Unassigns a task from a specific user.
-//     *
-//     * @param taskId    the ID of the task to unassign
-//     * @param projectId the ID of the project the task belongs to
-//     * @param userId    the ID of the user to unassign the task from
-//     * @return a ResponseEntity with an OK HTTP status code
-//     */
-//    @DeleteMapping("/unassignTask") //TODO
-//    public ResponseEntity<Void> unassignTaskFromUser(
-//            @RequestParam("taskId") Long taskId,
-//            @RequestParam("projectId") Long projectId,
-//            @RequestParam("userId") Long userId
-//    ) {
-////        taskService.unassignTaskFromUser(taskId, projectId, userId);
-////        return ResponseEntity.ok().build();
-//        return null;
-//    }
-//
-//    /**
-//     * Unassigns a task from a list of users.
-//     *
-//     * @param taskId    the ID of the task to unassign
-//     * @param projectId the ID of the project the task belongs to
-//     * @param userIdList    the IDs of the users to unassign the task from
-//     * @return a ResponseEntity with an OK HTTP status code
-//     */
-//    @DeleteMapping("/unassignTask/multiple/users") //TODO
-//    public ResponseEntity<Void> unassignTaskFromUsers(
-//            @RequestParam("taskId") Long taskId,
-//            @RequestParam("projectId") Long projectId,
-//            @RequestBody List<Long> userIdList
-//    ) {
-////        taskService.unassignTaskFromUser(taskId, projectId, userId);
-////        return ResponseEntity.ok().build();
-//        return null;
-//    }
-//
-//    /**
-//     * Unassigns a task from a all users in a project.
-//     *
-//     * @param taskId    the ID of the task to unassign
-//     * @param projectId the ID of the project the task belongs to
-//     * @return a ResponseEntity with an OK HTTP status code
-//     */
-//    @DeleteMapping("/unassignTask/all") //TODO
-//    public ResponseEntity<Void> unassignTaskFromAllUsersInProject(
-//            @RequestParam("taskId") Long taskId,
-//            @RequestParam("projectId") Long projectId
-//    ) {
-////        taskService.unassignTaskFromUser(taskId, projectId, userId);
-////        return ResponseEntity.ok().build();
-//        return null;
-//    }
+
+    /**
+     * Unassigns a task from a specific user or a list of users.
+     *
+     * @param assignTaskRequest a {@link AssignTaskRequest class} containing the request data which is;
+     *                          <ul>
+     *                            <li> taskId -> the ID of the task to assign</li>
+     *                            <li> projectId -> the Id of the project to which the task belongs </li>
+     *                            <li> userIdList -> the list of user IDs to assign the task to</li>
+     *                          </ul>
+     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @throws ResourceNotFoundException   If the specified task, project, or user is not found
+     * @throws NotLeaderOfProjectException If the user attempting to unassign the task is not
+     *                                     a {@link Role#PROJECT_LEADER leader} or {@link Role#PROJECT_ADMIN admin} of the project
+     */
+    @DeleteMapping("/unassignTask")
+    public ResponseEntity<MapResponse> unassignTaskFromUser_s(
+            @RequestBody AssignTaskRequest assignTaskRequest
+    ) throws ResourceNotFoundException, NotLeaderOfProjectException {
+        return ResponseEntity.ok(taskService.unAssignTaskFromUser_s(assignTaskRequest));
+    }
+
+
+    /**
+     * Unassigns a task from all users within a specified project.
+     *
+     * @param assignTaskRequest a {@link AssignTaskRequest class} containing the request data which is;
+     *                          <ul>
+     *                            <li> taskId -> the ID of the task to assign</li>
+     *                            <li> projectId -> the Id of the project to which the task belongs </li>
+     *                            <li> userIdList -> the list of user IDs to assign the task to</li>
+     *                          </ul>     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @return A {@link MapResponse} object containing the message of the unassigned operation
+     * @throws ResourceNotFoundException   If the specified task & project is not found
+     * @throws NotLeaderOfProjectException If the user attempting to unassign the task is not
+     *                                     a leader or admin of the project
+     */
+    @DeleteMapping("/unassignTask/all")
+    public ResponseEntity<MapResponse> unassignTaskFromAllUsersInProject(
+            @RequestBody AssignTaskRequest assignTaskRequest
+    ) throws ResourceNotFoundException, NotLeaderOfProjectException {
+        return ResponseEntity.ok(taskService.unassignTaskFromAllUsersInProject(assignTaskRequest));
+    } // TODO::: test THIS method out!!!!
 
 }
