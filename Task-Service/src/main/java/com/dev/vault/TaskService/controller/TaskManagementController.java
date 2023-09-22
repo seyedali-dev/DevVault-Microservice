@@ -1,7 +1,5 @@
 package com.dev.vault.TaskService.controller;
 
-import com.dev.vault.TaskService.model.enums.TaskPriority;
-import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.dev.vault.TaskService.model.request.TaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.service.interfaces.TaskManagementService;
@@ -9,6 +7,8 @@ import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.model.enums.TaskPriority;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,24 +1,22 @@
-package com.dev.vault.TaskService.model.entity;
+package com.dev.vault.shared.lib.model.dto;
 
 import com.dev.vault.shared.lib.model.enums.TaskPriority;
 import com.dev.vault.shared.lib.model.enums.TaskStatus;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Task {
+public class TaskDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
 
     private String taskName;
@@ -26,15 +24,12 @@ public class Task {
     private LocalDateTime dueDate;
     private LocalDateTime createdAt;
     private LocalDateTime completionDate;
-    @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
-    @Enumerated(EnumType.STRING)
     private TaskPriority taskPriority;
     private boolean hasOverdue;
 
     /* relationships */
-    @OneToMany
-    private List<TaskUser> assignedUsers = new ArrayList<>();
+    private List<TaskUserDTO> assignedUsersDTO = new ArrayList<>();
     private Long createdByUserId;
     private Long projectId;
     /* end of relationships */

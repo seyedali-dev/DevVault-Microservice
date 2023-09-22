@@ -1,6 +1,6 @@
 package com.dev.vault.TaskService.model.response;
 
-import com.dev.vault.TaskService.model.enums.TaskStatus;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.dev.vault.TaskService.model.enums;
+package com.dev.vault.shared.lib.model.enums;
 
 public enum TaskPriority {
     HIGH,

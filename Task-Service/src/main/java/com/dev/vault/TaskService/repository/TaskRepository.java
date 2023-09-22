@@ -1,8 +1,8 @@
 package com.dev.vault.TaskService.repository;
 
 import com.dev.vault.TaskService.model.entity.Task;
-import com.dev.vault.TaskService.model.enums.TaskPriority;
-import com.dev.vault.TaskService.model.enums.TaskStatus;
+import com.dev.vault.shared.lib.model.enums.TaskPriority;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

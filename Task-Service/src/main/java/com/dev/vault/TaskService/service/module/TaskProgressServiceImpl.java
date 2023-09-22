@@ -2,12 +2,12 @@ package com.dev.vault.TaskService.service.module;
 
 import com.dev.vault.TaskService.fegin.client.AuthUserFeignClient;
 import com.dev.vault.TaskService.model.entity.Task;
-import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.dev.vault.TaskService.repository.TaskRepository;
 import com.dev.vault.TaskService.service.interfaces.TaskProgressService;
 import com.dev.vault.TaskService.util.RepositoryUtils;
 import com.dev.vault.TaskService.util.TaskUtils;
 import com.dev.vault.shared.lib.exceptions.DevVaultException;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

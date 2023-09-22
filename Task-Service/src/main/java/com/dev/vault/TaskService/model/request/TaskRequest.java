@@ -1,7 +1,7 @@
 package com.dev.vault.TaskService.model.request;
 
-import com.dev.vault.TaskService.model.enums.TaskPriority;
-import com.dev.vault.TaskService.model.enums.TaskStatus;
+import com.dev.vault.shared.lib.model.enums.TaskPriority;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

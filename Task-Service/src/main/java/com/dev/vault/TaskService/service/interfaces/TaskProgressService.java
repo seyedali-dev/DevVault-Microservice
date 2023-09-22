@@ -1,10 +1,10 @@
 package com.dev.vault.TaskService.service.interfaces;
 
-import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.dev.vault.shared.lib.exceptions.DevVaultException;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 
 public interface TaskProgressService {
 

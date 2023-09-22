@@ -1,11 +1,11 @@
 package com.dev.vault.TaskService.controller;
 
-import com.dev.vault.TaskService.model.enums.TaskStatus;
 import com.dev.vault.TaskService.service.interfaces.TaskProgressService;
 import com.dev.vault.shared.lib.exceptions.DevVaultException;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import com.dev.vault.shared.lib.model.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
