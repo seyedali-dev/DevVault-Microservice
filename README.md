@@ -3,6 +3,7 @@
 Welcome to DevVault, your go-to project management tool powered by Spring Boot! 🚀
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Functionalities](#functionalities)
 - [Technologies Used](#technologies-used)
@@ -14,7 +15,10 @@ Welcome to DevVault, your go-to project management tool powered by Spring Boot! 
 
 ## Introduction
 
-DevVault is a **comprehensive project management application** built using **Spring Boot** and **microservices architecture**. It provides a **seamless experience** for project leaders and team members to **collaborate effectively**. With DevVault, you can register users, create projects, manage project members, create tasks, and assign tasks to team members.
+DevVault is a **comprehensive project management application** built using **Spring Boot** and **microservices
+architecture**. It provides a **seamless experience** for project leaders and team members to **collaborate effectively
+**. With DevVault, you can register users, create projects, manage project members, create tasks, and assign tasks to
+team members.
 
 ## Functionalities
 
@@ -24,7 +28,8 @@ DevVault is a **comprehensive project management application** built using **Spr
 
 2. **Project Creation**: Users can create new projects, becoming the **project leader** in the process. 🏗️
 
-3. **Adding Members to Projects**: Project leaders can add members to their projects and specify their roles as project admins or team members. 🧑‍🤝‍🧑
+3. **Adding Members to Projects**: Project leaders can add members to their projects and specify their roles as project
+   admins or team members. 🧑‍🤝‍🧑
 
 4. **Task Creation**: Users can create tasks within projects, enabling **structured project management**. 📋
 
@@ -32,21 +37,22 @@ DevVault is a **comprehensive project management application** built using **Spr
 
 6. **Task Progress Tracking**: Users can mark tasks as completed, keeping everyone informed about project progress. ✔️
 
-7. **Project and Task Comments**: Users can comment on projects and tasks, fostering **collaboration** and **communication** among team members. 💬
+7. **Project and Task Comments**: Users can comment on projects and tasks, fostering **collaboration** and *
+   *communication** among team members. 💬
 
 ## Technologies Used
 
 💻 DevVault leverages several **cutting-edge technologies** and microservices:
 
-| Technology             | Description                              |
-|------------------------|------------------------------------------|
-| Spring Boot            | The foundation for building microservices.| 🌱
-| JWT Authentication     | Secure user registration and login.      | 🔒
-| Feign Client           | Service communication between microservices.| 📡
-| Eureka Service Registry| For service discovery.                   | 🕵️
-| Netflix Zuul API Gateway| Routes requests and applies filters.   | 🌐
-| Config Server          | Manages configuration properties.         | ⚙️
-| Shared Library         | Reusable classes for multiple services.   | 📚
+| Technology               | Description                                  |
+|--------------------------|----------------------------------------------|
+| Spring Boot              | The foundation for building microservices.   | 🌱
+| JWT Authentication       | Secure user registration and login.          | 🔒
+| Feign Client             | Service communication between microservices. | 📡
+| Eureka Service Registry  | For service discovery.                       | 🕵️
+| Netflix Zuul API Gateway | Routes requests and applies filters.         | 🌐
+| Config Server            | Manages configuration properties.            | ⚙️
+| Shared Library           | Reusable classes for multiple services.      | 📚
 
 ## Project Structure
 
@@ -93,10 +99,12 @@ devvault/
 
 ## Contributing
 
-🤝 Contributions to DevVault are welcome! If you have suggestions, find issues, or want to contribute, please create a GitHub issue or submit a pull request. 🙌
+🤝 Contributions to DevVault are welcome! If you have suggestions, find issues, or want to contribute, please create a
+GitHub issue or submit a pull request. 🙌
 
 ## License
 
-📜 DevVault is open-source and licensed under the [MIT License](LICENSE). Feel free to use, modify, and share it as needed. 📣
+📜 DevVault is open-source and licensed under the [MIT License](LICENSE). Feel free to use, modify, and share it as
+needed. 📣
 
 **Happy coding** with DevVault! 🌟👩‍💻👨‍💻

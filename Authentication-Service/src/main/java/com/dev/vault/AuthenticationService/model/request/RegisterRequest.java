@@ -17,15 +17,16 @@ import org.springframework.format.annotation.NumberFormat;
 public class RegisterRequest {
 
     private @NotNull @NotBlank String username;
-    @NotNull @NotBlank
+    @NotNull
+    @NotBlank
     @Pattern(regexp = "^" + //start of line
-                      "(?=.*[0-9])" + //0-9 numbers
-                      "(?=.*[a-z])" + //a-z letters
-                      "(?=.*[A-Z])" + //A-Z letters
-                      "(?=.*[!@#&()–\\[{}\\]:;',?/*~$^+=<>])" + // one of the special characters
-                      "." + // matches anything
-                      "{8,}" +// at least 8 characters
-                      "$" // end of line
+            "(?=.*[0-9])" + //0-9 numbers
+            "(?=.*[a-z])" + //a-z letters
+            "(?=.*[A-Z])" + //A-Z letters
+            "(?=.*[!@#&()–\\[{}\\]:;',?/*~$^+=<>])" + // one of the special characters
+            "." + // matches anything
+            "{8,}" +// at least 8 characters
+            "$" // end of line
             , message = "Pass must be more than 8 characters & must contain a-z, A-Z, 0-9 and special characters.")
     private String password;
     private @Email String email;

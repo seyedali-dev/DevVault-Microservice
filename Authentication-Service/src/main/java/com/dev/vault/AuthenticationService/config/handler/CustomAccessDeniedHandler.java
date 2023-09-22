@@ -19,8 +19,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             log.warn("User: " + auth.getName()
-                     + " attempted to access the protected URL: "
-                     + request.getRequestURI());
+                    + " attempted to access the protected URL: "
+                    + request.getRequestURI());
         }
 
         response.sendError(HttpServletResponse.SC_FORBIDDEN, "🔐🔐🔐 You are not authorized to access this resource");

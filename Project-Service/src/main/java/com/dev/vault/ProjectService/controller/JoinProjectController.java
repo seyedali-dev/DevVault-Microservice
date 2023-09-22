@@ -28,7 +28,7 @@ public class JoinProjectController {
     /**
      * Sends a join project request for the specified project.
      *
-     * @param projectId  the ID of the project to send the join project request to
+     * @param projectId the ID of the project to send the join project request to
      * @return ResponseEntity containing the JoinResponse object returned by the service
      */
     @PostMapping({"/{projectId}"})

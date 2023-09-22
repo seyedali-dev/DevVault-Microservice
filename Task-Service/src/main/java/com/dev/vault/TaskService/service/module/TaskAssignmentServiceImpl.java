@@ -6,6 +6,7 @@ import com.dev.vault.TaskService.model.entity.Task;
 import com.dev.vault.TaskService.model.entity.TaskUser;
 import com.dev.vault.TaskService.model.request.AssignTaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
+import com.dev.vault.TaskService.repository.TaskRepository;
 import com.dev.vault.TaskService.repository.TaskUserRepository;
 import com.dev.vault.TaskService.service.interfaces.TaskAssignmentService;
 import com.dev.vault.TaskService.util.ProjectTaskValidationUtils;
@@ -36,6 +37,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Service
 @RequiredArgsConstructor
 public class TaskAssignmentServiceImpl implements TaskAssignmentService {
+    private final TaskRepository taskRepository;
 
     private final TaskUserRepository taskUserRepository;
     private final AuthUserFeignClient authUserFeignClient;
@@ -146,7 +148,7 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         Task task = repositoryUtils.find_TaskById_OrElseThrow_ResourceNotFoundException(taskId);
 
         // 2. Unassign the task from the user(s) and return a map as response.
-        return unAssignTaskFromUsersList(userIdList, new MapResponse(), task.getTaskName());
+        return unAssignTaskFromUsersList(userIdList, new MapResponse(), task);
     }
 
 
@@ -166,11 +168,11 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         // 2. Find the UserIDs of the assignedUsers to the task.
         List<Long> assignedUser_sToTask = taskUserRepository.findByTask(task)
                 .stream()
-                .map(TaskUser::getTaskUserId)
+                .map(TaskUser::getUserId)
                 .toList();
 
         // 3. Unassign the task from the user(s) and return a map as response.
-        return unAssignTaskFromUsersList(assignedUser_sToTask, new MapResponse(), task.getTaskName());
+        return unAssignTaskFromUsersList(assignedUser_sToTask, new MapResponse(), task);
     }
 
 
@@ -185,18 +187,27 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         taskValidationUtils.handle_TaskBelongingToProject(task, projectDTO.getProjectId());
     }
 
-    private MapResponse unAssignTaskFromUsersList(List<Long> userIdList, MapResponse mapResponse, String taskName) {
+    private MapResponse unAssignTaskFromUsersList(List<Long> userIdList, MapResponse mapResponse, Task task) {
+        String memberNotPresentMessage = "😊 It seems no member was found that the task '" + task.getTaskName() + "' is assigned 😊";
+        if (userIdList.isEmpty())
+            mapResponse.getMapResponse().put("NoMemberFound?", memberNotPresentMessage);
+
         userIdList.forEach(userId -> {
             // a) find the user
             UserDTO userDTO = authUserFeignClient.getUserDTOById(userId);
             String userDTO_Username = userDTO.getUsername();
 
             // b) find the task associated with the user and unassign (delete) it if it is present
-            Optional<TaskUser> assignedTaskToUser = taskUserRepository.findByUserId(userDTO.getUserId());
-            if (assignedTaskToUser.isPresent()) {
-                taskUserRepository.delete(assignedTaskToUser.get());
+            Optional<TaskUser> assignedTaskToUserToRemove = taskUserRepository.findByUserId(userDTO.getUserId());
+            if (assignedTaskToUserToRemove.isPresent()) {
+                // c) remove association of taskUser from task
+                task.getAssignedUsers().remove(assignedTaskToUserToRemove.get());
+                taskRepository.save(task);
 
-                String unassignSuccessMessage = "Task '" + taskName + "' UnAssigned from User '" + userDTO_Username + "' ✅";
+                // d) now delete the TaskUser
+                taskUserRepository.delete(assignedTaskToUserToRemove.get());
+
+                String unassignSuccessMessage = "Task '" + task.getTaskName() + "' UnAssigned from User '" + userDTO_Username + "' ✅";
                 mapResponse.getMapResponse().put(userDTO_Username, unassignSuccessMessage);
             } else {
                 String memberNotFoundErrorMessage = "😊 huh... It seems user '" + userDTO_Username + "' either was already unassigned, or is not a member of this project 😊";

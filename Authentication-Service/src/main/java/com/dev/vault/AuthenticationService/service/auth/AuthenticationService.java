@@ -1,10 +1,10 @@
 package com.dev.vault.AuthenticationService.service.auth;
 
+import com.dev.vault.AuthenticationService.model.request.AuthenticationRequest;
+import com.dev.vault.AuthenticationService.model.request.RegisterRequest;
 import com.dev.vault.shared.lib.exceptions.AuthenticationFailedException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
-import com.dev.vault.AuthenticationService.model.request.AuthenticationRequest;
-import com.dev.vault.AuthenticationService.model.request.RegisterRequest;
 import com.dev.vault.shared.lib.model.response.AuthenticationResponse;
 
 /**

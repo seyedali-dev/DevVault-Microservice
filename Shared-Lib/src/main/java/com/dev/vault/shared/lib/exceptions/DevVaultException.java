@@ -14,6 +14,7 @@ public class DevVaultException extends RuntimeException {
 
     @JsonProperty("statusCode")
     private int statusCode;
+
     public DevVaultException() {
     }
 

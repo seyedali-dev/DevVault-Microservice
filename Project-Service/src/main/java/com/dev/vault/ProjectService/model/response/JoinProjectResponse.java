@@ -1,7 +1,10 @@
 package com.dev.vault.ProjectService.model.response;
 
 import com.dev.vault.ProjectService.model.enums.JoinStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

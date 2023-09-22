@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Authentication-Service/Authentication-Service.iml" filepath="$PROJECT_DIR$/Authentication-Service/Authentication-Service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/DevVault-Microservice.iml" filepath="$PROJECT_DIR$/.idea/DevVault-Microservice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Project-Service/Project-Service.iml" filepath="$PROJECT_DIR$/Project-Service/Project-Service.iml" />
       <module fileurl="file://$PROJECT_DIR$/Task-Service/Task-Service.iml" filepath="$PROJECT_DIR$/Task-Service/Task-Service.iml" />
     </modules>
   </component>
