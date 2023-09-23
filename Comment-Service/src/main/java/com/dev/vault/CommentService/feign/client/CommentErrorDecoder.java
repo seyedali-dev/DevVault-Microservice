@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class TaskErrorDecoder implements ErrorDecoder {
+public class CommentErrorDecoder implements ErrorDecoder {
 
     @Override
     @SneakyThrows

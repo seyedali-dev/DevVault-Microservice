@@ -29,4 +29,8 @@ public interface ProjectUtilFeignClient {
     @GetMapping("/get-user-association-with-task-and-project/{projectId}")
     List<UserDTO> getUsersAssociatedWithTaskAndProject(@PathVariable long projectId);
 
+
+    @GetMapping("/validate-project-exists-by-id/{projectId}")
+    boolean validateProjectExists(@PathVariable long projectId);
+
 }

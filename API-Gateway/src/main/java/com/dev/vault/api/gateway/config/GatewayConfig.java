@@ -65,6 +65,13 @@ public class GatewayConfig {
                         .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
                         .uri("lb://6-TASK-SERVICE")
                 )
+
+                //COMMENT-SERVICE
+                .route("comment-route", predicateSpec -> predicateSpec
+                        .path("/api/v1/comment/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.filter(filterWithAuthentication()))
+                        .uri("lb://7-COMMENT-SERVICE")
+                )
                 .build();
     }
 

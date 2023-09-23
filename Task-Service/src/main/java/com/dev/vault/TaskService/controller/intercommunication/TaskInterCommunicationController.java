@@ -1,13 +1,11 @@
 package com.dev.vault.TaskService.controller.intercommunication;
 
 import com.dev.vault.TaskService.service.intercommunication.TaskInterCommunicationService;
-import com.dev.vault.shared.lib.exceptions.DevVaultException;
-import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
-import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
-import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
-import com.dev.vault.shared.lib.model.dto.TaskDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,23 +14,15 @@ public class TaskInterCommunicationController {
 
     private final TaskInterCommunicationService taskInterCommunicationService;
 
-    @GetMapping("/get-task-by-id/{taskId}")
-    public TaskDTO getTaskDTO(@PathVariable long taskId) throws ResourceNotFoundException {
-        return taskInterCommunicationService.findTaskById(taskId);
+    /**
+     * Validate whether task exists in the db.
+     *
+     * @param taskId the ID of the task to find
+     * @return boolean of either ture if the task is present, otherwise false
+     */
+    @GetMapping("/validate-task-existence-by-id/{taskId}")
+    public boolean validateTaskExistence(@PathVariable long taskId) {
+        return taskInterCommunicationService.validateTaskExistence(taskId);
     }
-
-
-    @PostMapping("/validate-task-and-project/{taskId}/{projectId}/{userId}")
-    public void validateTaskAndProjectAndUser(
-            @PathVariable long taskId,
-            @PathVariable long projectId,
-            @PathVariable long userId
-    ) throws DevVaultException,
-            ResourceNotFoundException,
-            NotMemberOfProjectException,
-            NotLeaderOfProjectException {
-        taskInterCommunicationService.validateTaskAndProjectAndUser(taskId, projectId, userId);
-    }
-
 
 }

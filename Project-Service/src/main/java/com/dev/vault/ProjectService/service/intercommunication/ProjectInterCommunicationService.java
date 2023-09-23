@@ -2,6 +2,7 @@ package com.dev.vault.ProjectService.service.intercommunication;
 
 import com.dev.vault.ProjectService.feign.client.AuthUserFeignClient;
 import com.dev.vault.ProjectService.model.entity.Project;
+import com.dev.vault.ProjectService.repository.ProjectRepository;
 import com.dev.vault.ProjectService.util.ProjectUtilsImpl;
 import com.dev.vault.ProjectService.util.RepositoryUtils;
 import com.dev.vault.shared.lib.model.dto.ProjectDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectInterCommunicationService {
 
+    private final ProjectRepository projectRepository;
     private final AuthUserFeignClient authUserFeignClient;
     private final ProjectUtilsImpl projectUtils;
     private final RepositoryUtils repositoryUtils;
@@ -56,6 +58,12 @@ public class ProjectInterCommunicationService {
                 .stream()
                 .map(projectMembers -> authUserFeignClient.getUserDTOById(projectMembers.getUserId()))
                 .toList();
+    }
+
+
+    public boolean validateProjectExists(long projectId) {
+        return projectRepository.findById(projectId)
+                .isPresent();
     }
 
 }

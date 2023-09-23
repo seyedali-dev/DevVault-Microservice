@@ -77,4 +77,17 @@ public class ProjectInterCommunicationController {
         return interCommunicationService.getUsersAssociatedWithTaskAndProject(projectId);
     }
 
+
+    /**
+     * Validate whether a project exists in the db.
+     *
+     * @param projectId the ID of the project that we want to check
+     * @return a boolean value of true if the project exists, otherwise false
+     * @throws ResourceNotFoundException if the project was not found in the db
+     */
+    @GetMapping("/validate-project-exists-by-id/{projectId}")
+    public boolean validateProjectExists(@PathVariable long projectId) {
+        return interCommunicationService.validateProjectExists(projectId);
+    }
+
 }
