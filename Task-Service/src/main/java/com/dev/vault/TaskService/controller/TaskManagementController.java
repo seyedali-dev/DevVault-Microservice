@@ -7,14 +7,17 @@ import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.model.enums.Role;
 import com.dev.vault.shared.lib.model.enums.TaskPriority;
 import com.dev.vault.shared.lib.model.enums.TaskStatus;
+import com.dev.vault.shared.lib.model.response.MapResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -82,12 +85,21 @@ public class TaskManagementController {
      *
      * @param taskId the ID of the task to delete
      * @return a ResponseEntity with an OK HTTP status code
+     * @throws ResourceNotFoundException   if the task is not found
+     * @throws NotLeaderOfProjectException if the requesting user is not {@link Role#PROJECT_LEADER leader}/{@link Role#PROJECT_ADMIN admin} of the project
      */
-    @DeleteMapping("/deleteTask/{taskId}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
-        taskService.deleteTask(taskId);
-        return ResponseEntity.ok().build();
-    } // TODO: only member and leader of project can delete a task
+    @DeleteMapping("/deleteTask/projectId/{projectId}/taskId/{taskId}")
+    public ResponseEntity<MapResponse> deleteTask(
+            @PathVariable long projectId,
+            @PathVariable long taskId
+    ) throws ResourceNotFoundException, NotLeaderOfProjectException {
+
+        taskService.deleteTask(projectId, taskId);
+        HashMap<Object, Object> mapResponse = new HashMap<>();
+        mapResponse.put("ProjectID: " + projectId, "Task with taskID: '" + taskId + "' deleted successfully ✅");
+
+        return ResponseEntity.ok(new MapResponse(mapResponse));
+    }
 
 
     /**
@@ -107,7 +119,7 @@ public class TaskManagementController {
             @RequestParam(value = "assignedTo_UserId", required = false) Long assignedTo_UserId
     ) {
         return ResponseEntity.ok(taskService.searchTaskBasedOnDifferentCriteria(status, priority, projectId, assignedTo_UserId));
-    } // TODO: query did not return a unique result: 2
+    }
 
 
     /**

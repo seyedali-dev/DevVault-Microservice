@@ -61,14 +61,14 @@ public class TaskProgressServiceImpl implements TaskProgressService {
             task.setHasOverdue(task.getDueDate().isBefore(LocalDateTime.now()));
             task.setTaskStatus(taskStatus);
             task.setCompletionDate(LocalDateTime.now());
-            taskRepository.save(task);
+            taskRepository.saveAndFlush(task);
         } else
             throw new DevVaultException(
                     "TaskStatus should be only as `COMPLETED`",
                     BAD_REQUEST,
                     BAD_REQUEST.value()
             );
-        // TODO: notify the users in that projectDTO (including leader and admin)
+        // TODO: notify the users in that project (including leader and admin) -> NOTIFICATION-SERVICE
     }
 
 }

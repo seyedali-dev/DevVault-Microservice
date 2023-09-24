@@ -6,6 +6,7 @@ import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
 import com.dev.vault.shared.lib.exceptions.ResourceNotFoundException;
+import com.dev.vault.shared.lib.model.enums.Role;
 import com.dev.vault.shared.lib.model.enums.TaskPriority;
 import com.dev.vault.shared.lib.model.enums.TaskStatus;
 
@@ -54,11 +55,13 @@ public interface TaskManagementService {
     /**
      * Delete a Task by its ID.
      *
-     * @param taskId the ID of the task to delete
-     * @throws ResourceNotFoundException if the task is not found
+     * @param projectId
+     * @param taskId    the ID of the task to delete
+     * @throws ResourceNotFoundException   if the task is not found
+     * @throws NotLeaderOfProjectException if the requesting user is not {@link Role#PROJECT_LEADER leader}/{@link Role#PROJECT_ADMIN admin} of the project
      */
-    void deleteTask(Long taskId)
-            throws ResourceNotFoundException;
+    void deleteTask(long projectId, long taskId)
+            throws ResourceNotFoundException, NotLeaderOfProjectException;
 
 
     /**

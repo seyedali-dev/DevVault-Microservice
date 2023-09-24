@@ -95,7 +95,7 @@ public class TaskUtils {
 
         Map<String, String> assignededUsersMap = new HashMap<>();
         task.getAssignedUsers().forEach(taskUser -> {
-            UserDTO assignedUser = authFeignClient.getUserDTOById(taskUser.getTaskUserId());
+            UserDTO assignedUser = authFeignClient.getUserDTOById(taskUser.getUserId());
             assignededUsersMap.put(assignedUser.getUserId().toString(), assignedUser.getUsername());
         });
 

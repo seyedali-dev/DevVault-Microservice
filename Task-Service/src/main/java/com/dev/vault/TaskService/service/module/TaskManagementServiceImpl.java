@@ -14,7 +14,6 @@ import com.dev.vault.TaskService.util.TaskUtils;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
-import com.dev.vault.shared.lib.model.dto.UserDTO;
 import com.dev.vault.shared.lib.model.enums.TaskPriority;
 import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.dev.vault.shared.lib.model.enums.TaskStatus.IN_PROGRESS;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -58,11 +59,11 @@ public class TaskManagementServiceImpl implements TaskManagementService {
     @Transactional
     public TaskResponse createNewTask(Long projectId, TaskRequest taskRequest) {
         String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
-        UserDTO currentUser = authUserFeignClient.getCurrentUsers_DTO(requestHeader);
+        long currentUserDTO_Id = authUserFeignClient.getCurrentUsers_Id(requestHeader);
 
-        validateUniqueName_Membership_Leadership_OfTask(projectId, taskRequest, currentUser.getUserId());
+        validateUniqueName_Membership_Leadership_OfTask(projectId, taskRequest, currentUserDTO_Id);
 
-        Task task = buildAndSaveTask(projectId, taskRequest, currentUser.getUserId());
+        Task task = buildAndSaveTask(projectId, taskRequest, currentUserDTO_Id);
 
         return taskUtils.buildTaskResponse(task);
     }
@@ -70,15 +71,27 @@ public class TaskManagementServiceImpl implements TaskManagementService {
     private void validateUniqueName_Membership_Leadership_OfTask(Long projectId, TaskRequest taskRequest, long currentUserId) {
         // Check if the currentUser is a member of the project
         if (!projectUtilFeignClient.isMemberOfProject(projectId, currentUserId))
-            throw new NotMemberOfProjectException("Ⓜ️👥 You are not a member of THIS project 👥Ⓜ️", FORBIDDEN, FORBIDDEN.value());
+            throw new NotMemberOfProjectException(
+                    "Ⓜ️👥 You are not a member of THIS project 👥Ⓜ️",
+                    FORBIDDEN,
+                    FORBIDDEN.value()
+            );
 
         // Check if the currentUser is the leader or admin of the project
         if (!projectUtilFeignClient.isLeaderOrAdminOfProject(projectId, currentUserId))
-            throw new NotLeaderOfProjectException("👮🏻You are not the Leader or Admin of THIS project👮🏻", FORBIDDEN, FORBIDDEN.value());
+            throw new NotLeaderOfProjectException(
+                    "👮🏻You are not the Leader or Admin of THIS project👮🏻",
+                    FORBIDDEN,
+                    FORBIDDEN.value()
+            );
 
         // Check if a task with the same name already exists in the project
         if (taskUtils.doesTaskAlreadyExists(taskRequest, projectId))
-            throw new ResourceAlreadyExistsException("⭕ Task {{" + taskRequest.getTaskName() + "}} already exists in db.. provide a unique name ⭕", BAD_REQUEST, BAD_REQUEST.value());
+            throw new ResourceAlreadyExistsException(
+                    "⭕ Task '" + taskRequest.getTaskName() + "' already exists in db.. provide a unique name ⭕",
+                    BAD_REQUEST,
+                    BAD_REQUEST.value()
+            );
     }
 
     private Task buildAndSaveTask(Long projectId, TaskRequest taskRequest, long currentUserId) {
@@ -95,7 +108,10 @@ public class TaskManagementServiceImpl implements TaskManagementService {
     }
 
     private TaskUser buildAndSaveTaskUser(long currentUserId, Task task) {
-        TaskUser taskUser = TaskUser.builder().userId(currentUserId).task(task).build();
+        TaskUser taskUser = TaskUser.builder()
+                .userId(currentUserId)
+                .task(task)
+                .build();
         return taskUserRepository.save(taskUser);
     }
 
@@ -139,7 +155,17 @@ public class TaskManagementServiceImpl implements TaskManagementService {
      * {@inheritDoc}
      */
     @Override
-    public void deleteTask(Long taskId) {
+    public void deleteTask(long projectId, long taskId) {
+        String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
+        long currentUserDTOs_Id = authUserFeignClient.getCurrentUsers_Id(requestHeader);
+
+        if (!projectUtilFeignClient.isLeaderOrAdminOfProject(projectId, currentUserDTOs_Id))
+            throw new NotLeaderOfProjectException(
+                    "👮🏻 You are not a leader/admin of THIS project! 👮🏻",
+                    FORBIDDEN,
+                    FORBIDDEN.value()
+            );
+
         taskRepository.deleteById(taskId);
     }
 
@@ -149,22 +175,26 @@ public class TaskManagementServiceImpl implements TaskManagementService {
      */
     @Override
     public List<TaskResponse> searchTaskBasedOnDifferentCriteria(TaskStatus status, TaskPriority priority, Long projectId, Long assignedTo_UserId) {
-        List<Task> taskList = new ArrayList<>();
+        // Using Set since I don't want any duplicate searches (tasks) to get added to the list!
+        Set<Task> taskList = new HashSet<>();
         List<TaskResponse> taskResponses = new ArrayList<>();
 
         if (status != null)
-            taskList.add(repositoryUtils.find_TaskByTaskStatus_OrElseThrow_ResourceNotException(status));
+            taskList.addAll(taskRepository.findByTaskStatus(status));
 
         if (priority != null)
-            taskList.add(repositoryUtils.find_TaskByTaskPriority_OrElseThrow_ResourceNotException(priority));
+            taskList.addAll(taskRepository.findByTaskPriority(priority));
 
         if (projectId != null)
-            taskList.add(repositoryUtils.find_TaskByProjectId_OrElseThrow_ResourceNotException(projectId));
+            taskList.addAll(taskRepository.findByProjectId(projectId));
 
         if (assignedTo_UserId != null) {
-            taskList.add(
-                    repositoryUtils.find_TaskUserByUserId_OrElseThrow_ResourceNotFoundException(assignedTo_UserId)
-                            .getTask()
+            taskList.addAll(
+                    // a) first finds the taskUser since the task and user are mapped together using this class.
+                    taskUserRepository.findTaskUserByUserId(assignedTo_UserId)
+                            .stream() // b) then stream over it and grab out the task!
+                            .map(TaskUser::getTask)
+                            .toList()
             );
         }
 
