@@ -3,6 +3,7 @@ package com.dev.vault.TaskService.controller;
 import com.dev.vault.TaskService.model.request.TaskRequest;
 import com.dev.vault.TaskService.model.response.TaskResponse;
 import com.dev.vault.TaskService.service.interfaces.TaskManagementService;
+import com.dev.vault.TaskService.service.module.pdf.PDFEntityService;
 import com.dev.vault.shared.lib.exceptions.NotLeaderOfProjectException;
 import com.dev.vault.shared.lib.exceptions.NotMemberOfProjectException;
 import com.dev.vault.shared.lib.exceptions.ResourceAlreadyExistsException;
@@ -13,10 +14,16 @@ import com.dev.vault.shared.lib.model.enums.TaskStatus;
 import com.dev.vault.shared.lib.model.response.MapResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +36,7 @@ import java.util.List;
 public class TaskManagementController {
 
     private final TaskManagementService taskService;
+    private final PDFEntityService pdfEntityService;
 
     /**
      * Creates a new task for the specified project.
@@ -133,14 +141,26 @@ public class TaskManagementController {
      * @return a ResponseEntity containing the exported file and an HTTP status code
      */
     @GetMapping("/exportTasks") //TODO
-    public ResponseEntity<?> exportTasks(
-            @RequestParam(value = "format") String format,
-            @RequestParam(value = "status", required = false) TaskStatus status,
-            @RequestParam(value = "priority", required = false) TaskPriority priority,
-            @RequestParam(value = "projectId", required = false) Long projectId,
-            @RequestParam(value = "assignedTo", required = false) Long assignedTo
+    public ResponseEntity<InputStreamResource> exportTasks(
+//            @RequestParam(value = "format") String format,
+//            @RequestParam(value = "status", required = false) TaskStatus status,
+//            @RequestParam(value = "priority", required = false) TaskPriority priority,
+//            @RequestParam(value = "projectId", required = false) Long projectId,
+//            @RequestParam(value = "assignedTo", required = false) Long assignedTo
     ) {
-        return null;
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        String currentDate = dateFormatter.format(new Date());
+        String filename = "TaskList(" + currentDate + ").pdf";
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Disposition", "attachment; filename=" + filename);
+
+        return ResponseEntity
+                .ok()
+                .headers(httpHeaders)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(pdfEntityService.createTaskPDF()));
     }
 
 }

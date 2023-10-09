@@ -87,6 +87,13 @@
             <version>3.1.1</version>
         </dependency>
 
+        <!-- OPEN-PDF -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.30</version>
+        </dependency>
+
         <!-- DB -->
         <dependency>
             <groupId>com.mysql</groupId>

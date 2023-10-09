@@ -23,7 +23,6 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 /**
  * A utility class that provides helper methods for working with tasks.
- * This class contains method for checking if a task with the same name already exists in a project. //TODO
  */
 @Service
 @RequiredArgsConstructor
