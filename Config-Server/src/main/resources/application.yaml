@@ -14,7 +14,7 @@ spring:
         git:
           uri: https://github.com/sayedxali/configserver-devvault.git
           clone-on-start: true
-          search-paths: master   # set the default branch name to 'master'
+#          search-paths: master   # set the default branch name to 'master'
 ---
 
 #eureka-client configuration
